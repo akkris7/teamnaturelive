@@ -1,0 +1,174 @@
+{% section 'header' %}
+<!-- eMarket 1-->
+<header id="header" class="header header-style1{% if settings.header_float_enable %} header-fixed{% endif %}">
+
+  {% if settings.display_header_top %}
+  <div class="header-top compad_hidden">
+    <div class="container">
+      <div class="row">  
+        <div class="header-top-left form-inline col-xl-10 col-lg-9 col-md-12 col-sm-6 ">
+              <div class="horizontal_menu">
+          {% section 'ss-mainmenu' %}
+        </div>
+        </div>        
+
+        <div class="header-top-right col-xl-2 col-lg-3 col-md-12 col-sm-12 col-xs-12">
+          
+          {% if shop.customer_accounts_optional or shop.customer_accounts_enabled %}
+            {% capture fullname %}{{ customer.first_name }} {{ customer.last_name }}{% endcapture %}
+            {% assign login_html = 'layout.header.login_html' | t:fullname:fullname %}
+            {% assign logout = 'layout.header.logout' | t %}
+            {% assign login = 'layout.header.login' | t %}
+            {% assign register = 'layout.header.register' | t %}
+            {% if customer  %}
+            <div class="s-login">{{ logout | customer_logout_link }}</div>
+            {% else %}
+              <ul class="account">
+                
+                 <li class="login"><i class="fa fa-lock" aria-hidden="true"></i> <a href="/account/login">{{ login }}</a></li>
+                <li class="register"> <span>{{ 'layout.header.or' | t  }}</span> <a href="/account/register" class="customer_register_link">{{ register }}</a></li>
+              </ul>
+
+           
+            {% endif %}
+            {% endif %}
+         
+        </div>       
+      </div>
+    </div>
+  </div>
+  {% endif %}
+  
+  <div class="header-center">
+    <div class="container">
+    <div class="navbar-logo d-none d-lg-block">
+      <div class="site-header-logo title-heading" itemscope itemtype="http://schema.org/Organization">
+        {% if settings.logo and settings.logo_img %}
+        <a href="/" itemprop="url" class="site-header-logo-image">
+          {% capture image_size %}{{ settings.logo_max_width }}x{% endcapture %}
+          <img src="{{ settings.logo | img_url: image_size }}"
+               srcset="{{ settings.logo | img_url: image_size }}"
+               alt="{{ settings.logo.alt | default: shop.name }}"
+               itemprop="logo">
+        </a>
+        {% else %}
+        <h2><a class="site-header-logo-link" href="/">{{ settings.logo_text }}</a></h2>
+        {% endif %}
+      </div>
+    </div>
+    <div class="middle-right d-none d-lg-block">
+      {% if settings.display_shopcart %}
+      {% include 'header-cart' %}
+      {% endif %}
+      {% if settings.display_wishlist %}
+     <!-- <div class="wishlist"><a href="/pages/wishlist" title=""><i class="fa fa-heart" aria-hidden="true"></i><span> Wishlist</span></a></div> -->
+      {% endif %}
+
+      
+    </div>
+  </div>
+  </div>
+  <div class="header-mobile d-lg-none">
+    <div class="container">
+      <div class="d-flex justify-content-between">
+        <div class="logo-mobiles">
+          <div class="site-header-logo title-heading" itemscope itemtype="http://schema.org/Organization">
+            {% if settings.logo and settings.logo_img %}
+            <a href="/" itemprop="url" class="site-header-logo-image">
+              <img src="{{ settings.logo_mobile | img_url: '120x', scale: 3 }}"
+                   srcset="{{ settings.logo_mobile | img_url: '120x', scale: 3 }}"
+                   alt="{{ settings.logo_mobile.alt | default: shop.name }}"
+                   itemprop="logo">
+            </a>
+            {% else %}
+            <h2><a class="site-header-logo-link" href="/">{{ settings.logo_text }}</a></h2>
+            {% endif %}
+          </div>
+        </div>
+        <div class="group-nav">
+          <div class="group-nav__ico group-nav__menu">
+            <div class="mob-menu">
+              <i class="material-icons">&#xE8FE;</i>
+            </div>
+          </div>
+          <div class="group-nav__ico group-nav__search no__at">
+            <div class="btn-search-mobi dropdown-toggle">
+              <i class="material-icons">&#xE8B6;</i>
+            </div>
+            <div class="form_search dropdown-content" style="display: none;">
+              <form class="formSearch" action="/search" method="get">
+                <input type="hidden" name="type" value="product">
+                <input class="form-control" type="search" name="q" value="{{ search.terms | escape }}" placeholder="{{ 'general.search.placeholder' | t }}" autocomplete="off" />
+                <button class="btn btn-search" type="submit" >
+                  <span class="btnSearchText hidden">{{ 'general.search.search' | t }}</span>
+                  <i class="fa fa-search"></i>
+                </button>
+              </form>
+            </div>
+          </div>
+          <div class="group-nav__ico group-nav__account no__at">
+
+            <a href="#" class="dropdown-toggle">
+              <i class="material-icons">&#xE7FF;</i>
+            </a>
+            <ul class="dropdown-content dropdown-menu sn">
+              {% if shop.customer_accounts_optional or shop.customer_accounts_enabled %}
+              {% capture fullname %}{{ customer.first_name }} {{ customer.last_name }}{% endcapture %}
+              {% assign login_html = 'layout.header.login_html' | t:fullname:fullname %}
+              {% assign logout = 'layout.header.logout' | t %}
+              {% assign login = 'layout.header.login' | t %}
+              {% assign register = 'layout.header.register' | t %}
+              {% if customer  %}
+              <li><a href="/pages/wishlist" title="{{ 'layout.customer.wishlist' | t }}"><i class="fa fa-heart"></i>{{ 'layout.customer.wishlist' | t }}</a></li>
+              <li><a href="/account/addresses" title="{{ customer.addresses_count }}"><i class="fa fa-book"></i>{{ 'customer.orders.title' | t }}</a></li>
+              <li><a href="/checkout" title="{{ 'layout.customer.checkout' | t }}"><i class="fa fa-book"></i>{{ 'layout.customer.checkout' | t }}</a></li>
+              <li><a href="/" title="buy on credit"><i class="fa fa-address-card-o"></i>Buy on credit</a></li>
+              <li><i class="fa fa-unlock-alt" aria-hidden="true"></i>{{ logout | customer_logout_link }}</li>
+              {% else %}
+              <li class="s-login"><i class="fa fa-user"></i><a href="/account/login" class="customer_login_link">{{ login }}</a></li>
+              <li><a href="/pages/wishlist" title="{{ 'layout.customer.wishlist' | t }}"><i class="fa fa-heart"></i>{{ 'layout.customer.wishlist' | t }}</a></li>
+              <li><a href="/account/addresses" title="{{ customer.addresses_count }}"><i class="fa fa-book"></i>{{ 'customer.orders.title' | t }}</a></li>
+              <li><a href="/checkout" title="{{ 'layout.customer.checkout' | t }}"><i class="fa fa-external-link-square" aria-hidden="true"></i>{{ 'layout.customer.checkout' | t }}</a></li>
+              <li><a href="/" title="buy on credit"><i class="fa fa-address-card-o"></i>Buy on credit</a></li>
+              {% endif %}
+              {% endif %}
+            </ul>
+          </div>
+          <div class="group-nav__ico group-nav__cart no__at">
+            {% include 'header-cart-mobile' %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+	<div class="header-bottom">
+      <div class="container">
+        <div class="wrap">
+          <div class="row wrap-flex">
+            <div class="col-lg-3 col-md-4 col-sm-5 col-xs-12 sidebar-megamenu">
+              {% section 'ss-vertical-menu' %}
+            </div>
+            <div class="col-lg-9 col-md-8 col-sm-7 hidden-xs main-search">
+                <div class="header-search">
+                  {% include 'header-search' %}
+                </div>        
+            </div>
+       		           
+          </div>
+        </div>
+      </div>
+
+    </div>    
+</header>
+{% if settings.header_float_enable %}
+<script>
+  $(window).scroll(function() {
+    if ($(this).scrollTop() >= 36) {
+      $('.header.header-fixed').addClass('stickytop');
+    }
+    else {
+      $('.header.header-fixed').removeClass('stickytop');
+    }
+  }); 
+</script>
+{% endif %}

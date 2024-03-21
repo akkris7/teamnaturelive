@@ -1,0 +1,56 @@
+<!-- snippet/product-price.liquid -->
+{% if product.title %}
+  {%- assign compare_at_price = product.compare_at_price -%}
+  {%- assign price = product.price -%}
+  {%- assign price_varies = product.price_varies -%}
+  {%- assign available = product.available -%}
+{% else %}
+  {%- assign compare_at_price = 1999 -%}
+  {%- assign price = 1999 -%}
+  {%- assign price_varies = false -%}
+  {%- assign available = true -%}
+{% endif %}
+
+{%- assign money_price = price | money -%}
+
+
+{%- assign varient = product.variants[0].title  -%}
+{%- assign Product_selling_price = product.variants[0].price | divided_by: 100  -%}
+
+{% if compare_at_price > price %}
+  {% if price_varies %}
+    
+    <span class="visually-hidden">{{ 'products.product.regular_price' | t }}</span>
+    <!--<span class="price-new">{{ money_price }}</span> -->
+    <span class="price-old">{{ compare_at_price | money }} </span>
+    <span class="quantity">{{ varient }}  </span>
+    <span class="price"> Rs.{{ Product_selling_price }}.00 INR </span>
+
+  {% else %}
+    
+    <span class="visually-hidden">{{ 'products.product.regular_price' | t }}</span>
+    <!--<span class="price-new">{{ money_price }}</span> -->
+    <span class="price-old"> {{ compare_at_price | money }} </span>
+    <span class="quantity">{{ varient }}  </span>
+    <span class="price"> Rs.{{ Product_selling_price }}.00 INR </span>
+
+  {% endif %}
+{% else %}
+
+  {% if price_varies %}
+    
+    <!--<span class="price-new">{{ money_price }}</span> -->
+    <span class="quantity">{{ varient }}  </span>
+    <span class="price"> Rs.{{ Product_selling_price }}.00 INR </span>
+
+  {% else %}
+    <span class="visually-hidden">{{ 'products.product.regular_price' | t }}</span>
+    
+    <!--<span class="price-new">{{ money_price }}</span> -->
+    <span class="quantity">{{ varient }}  </span>
+	<span class="price"> Rs.{{ Product_selling_price }}.00 INR </span>
+
+  {% endif %}
+{% endif %}
+
+

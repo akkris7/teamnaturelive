@@ -1,0 +1,44 @@
+{% if shop.customer_accounts_enabled %}
+{% if customer %}  
+<li class="ct_login">
+  <a id="customer_logout_link 123" href="/account/logout"><i class="fa fa-lock"></i>{{ 'layout.customer.log_out' | t }}</a>
+</li>
+<li class="regis">
+  <a href="/account">{{ 'layout.customer.info' | t }}</a>
+</li>
+{% else %}
+<li class="log login login-dropdown">
+  <a class="login dropdown-toggle" href="javascript:void(0)">{{ 'customer.login.sign_in' | t }}</a>
+  
+  <div class="dropdown-content dropdown-menu">
+    <h6 class="title-login d-none">{{ 'customer.login.sign_in' | t }}</h6>
+    <form class="form-login" accept-charset="UTF-8" action="/account/login" method="post">
+      <div class="form-group">
+        <label for="customer_email">{{ 'customer.login.email' | t }}<em>*</em></label>
+        <input class="form-control" type="email" value="" name="customer[email]"  >
+      </div>
+      <div class="form-group">
+        <label for="customer_password">{{ 'customer.login.password' | t }}<em>*</em></label>
+        <input class="form-control" type="password" value="" name="customer[password]" >
+      </div>
+      <div class="form-group">
+        <input type="submit" class="btn btn-default btn-full mg-bt10" value="{{ 'customer.login.sign_in' | t }}">
+        
+      </div>
+      <div class="form-group">
+        {% if shop.customer_accounts_optional %}
+        <a href="/account/register" class="btn btn-secondary btn-full">{{ 'layout.customer.create_account' | t }}</a>
+        {% endif %}
+      </div>
+      <div class="dropdown-divider"></div>
+      <div class="dropdown-item text-center"><a href="/account/login#recover">{{ 'customer.login.forgot_password' | t }}</a></div>
+    </form>
+  </div>
+</li>
+<li class="regis">
+  {% if shop.customer_accounts_optional %}
+  <a class="" href="/account/register">{{ 'layout.customer.create_account' | t }}</a>
+  {% endif %}
+</li>
+{% endif %}
+{% endif %}

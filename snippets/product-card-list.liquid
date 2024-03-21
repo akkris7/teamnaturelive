@@ -1,0 +1,87 @@
+{% assign on_sale = false %}
+{% assign sale_text = 'products.product.sale' | t %}
+{% if product.compare_at_price > product.price %}
+{% assign on_sale = true %}
+{% endif %}
+
+{% assign sold_out = true %}
+{% assign sold_out_text = 'products.product.sold_out' | t %}
+{% assign sTT = 'products.product.outOfStock' | t %}
+{% if product.available %}
+{% assign sold_out = false %}
+{% assign sTT = 'products.product.inStock' | t %}
+{% endif %}
+<div class="product-item" data-id="product-{{ product.id }}">
+  <div class="product-item-container">
+    <div class="left-block pull-left">
+      <div class="product-image-container product-image">
+        <a class="grid-view-item__link image-ajax" href="{{ product.url | within: collection }}">
+          <img class="img-responsive" src="{{ product.featured_image.src | img_url: 'grande', scale: 1 }}" alt="{{ product.featured_image.alt | escape }}">
+        </a>
+        <div class="box-labels">
+          {% if product.tags contains "New" %}
+          <span class="label-product label-new">{{ 'general.megamenu_icons.new' | t }}</span>
+          {% endif %}
+          {% if on_sale %}
+          <span class="label-product label-sale"><span class="d-none">{{ 'products.product.on_sale' | t }}</span>
+            -{{ product.selected_or_first_available_variant.compare_at_price | minus: product.selected_or_first_available_variant.price | times: 100.0 | divided_by: product.selected_or_first_available_variant.compare_at_price | money_without_currency | replace: ',', '.' | times: 100 | remove: '.0'}}%</span>
+          {% endif %}
+        </div>
+      </div>
+      {% if sold_out %}
+      <div class="label-sold-out">
+        <span>{{ 'products.product.sold_out_stock' | t }}</span>
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="right-block">
+      <div class="caption">
+
+        <h4 class="title-product"><a class="product-name" href="{{ product.url }}">{{ product.title }}</a></h4>
+        <div class="custom-reviews a-left hidden-xs">          
+          <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>          
+        </div>
+        <div class="price">
+          {% include 'product-price' %}
+        </div>
+        {% if product.description != blank %}
+        {% assign content = product.description %} 
+        {% if content contains "[shortcode]" %}           
+        {% assign str = content | split: "[/shortcode]" | first %}                    
+        {% assign str = str | split: "[shortcode]" | last %}
+        {% assign str = "[shortcode]" | append: str | append: "[/shortcode]" %}        
+        {% assign content = content | remove: str %}
+        {% endif %}                
+        <div class="rte description">
+          <label  class="d-none">{{ 'products.product.overview' | t }}</label>
+          {{ content | strip_html | truncatewords: 39}}
+        </div>
+        {% endif %}
+      </div>
+      <div class="button-link">
+        {% if sold_out %}
+        <button class="btn-addToCart disabled" type="submit" value="Submit" disabled data-toggle="tooltip" title="{{ 'products.product.sold_out' | t }}">
+          <i class="fa fa-shopping-basket"></i> <span>{{ 'products.product.sold_out' | t }}</span>
+        </button>
+        {% elsif product.variants.size > 1 %}
+        <div class="btn-button option">  
+          <a href="{{ product.url | within: collection }}"  title=""><i class="fa fa-shopping-basket"></i>{{ 'products.product.select_options' | t }}</a>
+        </div>
+        {% else %}
+        <div class="btn-button add-to-cart action{% if sold_out %} sold-out{% endif %}">    
+          <form action="/cart/add" method="post" class="variants" id="AddToCartForm-{{ product.id }}" enctype="multipart/form-data">   
+            <input type="hidden" name="id" value="{{ product.variants[0].id }}" />           
+            <a class="btn-addToCart grl" href="javascript:void(0)" title="{{ 'products.product.add_to_cart' | t }}"><i class="fa fa-shopping-basket"></i>{{ 'products.product.add_to_cart' | t }}</a>
+          </form>  
+        </div>
+        {% endif %} 
+      <!--  {% include 'product-wishlist' %} -->
+        <div class="quickview-button">
+          <a class="quickview iframe-link d-none d-xl-block btn_df" href="javascript:void(0)" data-variants_id="{{ product.variants[0].id }}" data-toggle="modal" data-target="#myModal" data-id="{{ product.handle }}" title="{{ 'products.product.quick_view' | t }}"><i class="fa fa-search"></i></a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

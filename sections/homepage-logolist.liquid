@@ -1,0 +1,99 @@
+
+
+
+{% if block.settings.image_size != blank %}
+{% assign image_size = block.settings.image_size %}
+{% else %}
+{% assign image_size = 'master' %}
+{% endif %}
+
+<div class="widget-logolist">
+  <div class="container">
+    <div class="contain">
+	<div class="wrap">
+    {% if section.blocks.size > 0 %}
+     
+        {% for block in section.blocks %}
+		{% if block.settings.image_size != blank %}
+            {% assign image_size = block.settings.image_size %}
+        {% else %}
+            {% assign image_size = 'master' %}
+        {% endif %}
+        <div class="logo-item{% if section.settings.title_enable %} logo-bar__item--large{% endif %}" {{ block.shopify_attributes }}>
+          <a href="#" class="logo-bar__link">
+            {% if block.settings.image != blank %}
+            <img class="img-responsive" alt="{{ block.settings.image.alt | default: shop.name }}" src="{{ block.settings.image | img_url: image_size }}" />
+            {% else %}
+             <img class="img-responsive" alt="{{ shop.name }}" src="//placehold.it/{{ image_size }}" />
+            {% endif %}
+          </a>
+        </div>
+
+        {% endfor %}
+    {% endif %}
+
+    {% if section.blocks.size == 0 %}
+    {% include 'no-blocks' %}
+    {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Home Logo Brand",
+  "class": "home-section",
+  "max_blocks": 10,
+  "settings": [
+	{
+      "type": "header",
+      "content": "Settings Garenal"
+    }
+    
+
+    
+  ],
+  "blocks": [
+    {
+      "type": "logo_image",
+      "name": "Logo",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "image_size",
+          "label": "Image size",
+          "default": "170x100",
+          "info": "[Size parameters](https://help.shopify.com/themes/liquid/filters/url-filters#size-parameters)"
+        }
+        
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Home Logo Brand",
+      "category": "Image",
+      "blocks": [
+        {
+          "type": "logo_image"
+        },
+        {
+          "type": "logo_image"
+        },
+        {
+          "type": "logo_image"
+        },
+        {
+          "type": "logo_image"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

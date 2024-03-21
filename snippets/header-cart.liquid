@@ -1,0 +1,75 @@
+<div class="minicart-header">
+  <a href="/cart" class="site-header__carts shopcart dropdown-toggle">
+    <span class="cart_ico"><i class="fa fa-shopping-cart" aria-hidden="true"></i>
+
+    </span>
+    <span class="cart_info">
+      <span class="cart-title"><span class="title-cart">{{ 'layout.cart.title_cart' | t }}</span></span>
+      <span id="CartCount" class="cout_cart"><span class="cout_item">( {{ cart.item_count }} )</span> {{ 'layout.cart.items_count.one' | t }}</span>  
+      <span class="cart-total">
+        <span id="CartTotal"  class="total_cart">- {{ cart.total_price | money }}</span>
+      </span>
+    </span>
+  </a>
+  <div class="block-content dropdown-content" style="display: none;">
+    <div class="no-items">
+      <p>{{ 'layout.cart.empty' | t }}</p>
+      <p class="text-continue btn"><a href="/">{{ 'layout.cart.continue_shopping' | t }}</a></p>
+       <a href="#" title="Remove This Item" class="icon-remove">&nbsp;</a>
+    </div>
+    <div class="block-inner has-items">
+      <div class="head-minicart">
+        <span class="label-products">{{ 'layout.cart.title_your_products' | t }}</span>
+        <span class="label-price hidden">{{ 'layout.cart.title_price' | t }}</span>
+        <a href="#" title="Remove This Item" class="icon-remove">&nbsp;</a>
+      </div>
+      <ol id="minicart-sidebar" class="mini-products-list">
+        {% for item in cart.items %}
+        <li class="item" data-product_id="{{ item.id }}">
+          <div class="product-img-wrap">
+            <a href="{{item.url}}" class="product-image">
+              <img src="{{ item.image | product_img_url: 'small' }}" alt="{{item.title}}">
+            </a>
+            <a href="javascript:void(0)" title="Remove This Item" class="btn-remove">&nbsp;</a>
+          </div>
+          <div class="product-details">
+            <div class="inner-left">
+              
+              <p class="product-name">
+                <a href="{{item.url}}">{{ item.product.title }}</a>
+              </p>
+              {% if item.product.variants.size != 0 %}
+              <div class="option">
+                {% unless item.variant.title contains 'Default' %}
+                <small>{{ item.variant.title }}</small>
+                {% endunless %}
+              </div>
+              {% endif %}
+              <div class="product-details-bottom">
+                <span class="title-desc">{{ 'layout.cart.title_quantity' | t }}</span>
+                <strong>{{item.quantity}}</strong>
+                <span class="icon">X</span>
+              </div>
+            </div>
+            <div class="product-price">
+              <span class="price">{{item.price | money}}</span>
+            </div>
+          </div>
+        </li>
+        {% endfor %}
+      </ol>
+      <div class="bottom-action actions">
+        <div class="price-total-w">										
+          <span class="label-price-total">{{ 'layout.cart.title_subtotal' | t }}</span> 
+          <span class="price-total"><span class="price">{{cart.total_price | money}}</span></span>				
+          <div style="clear:both;"></div>	
+        </div>
+        <div class="button-wrapper">
+          <a href="/cart" class="link-button btn-gotocart" title="{{ 'layout.cart.title_view_your_cart' | t }}">{{ 'layout.cart.title_go_to_cart' | t }}</a>
+          <a href="/checkout" class="link-button btn-checkout" title="{{ 'layout.cart.title_checkout' | t }}">{{ 'layout.cart.title_checkout' | t }}</a>
+          <div style="clear:both;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

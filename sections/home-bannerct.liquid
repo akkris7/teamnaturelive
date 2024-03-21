@@ -1,0 +1,57 @@
+<div class="home-banner-ct banners">
+  <div class="container">
+    <div class="wrap-bg">
+      <div class="row">
+        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 static-image">
+          <a href="#" title="{{ section.settings.link1.alt | default: shop.name }}">
+            {% if section.settings.image1 != blank %}
+            <img class="img-responsive lazyload" data-sizes="auto" src="{{ "icon-loadings.svg" | asset_url }}" alt="{{ section.settings.image1.alt | default: shop.name }}" data-src="{{ section.settings.image1 | img_url: 'master' }}" />
+            {% else %}
+            <img class="img-responsive" alt="{{ shop.name }}" src="//placehold.it/575x300" />
+            {% endif %}
+          </a>
+        </div>
+        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 static-image2">   
+          <a  class="img1" href="#" title="{{ section.settings.link2.alt | default: shop.name }}">
+            {% if section.settings.image2 != blank %}
+            <img class="img-responsive lazyload" data-sizes="auto" src="{{ "icon-loadings.svg" | asset_url }}" alt="{{ section.settings.image2.alt | default: shop.name }}" data-src="{{ section.settings.image2 | img_url: 'master' }}" />
+            {% else %}
+            <img class="img-responsive" alt="{{ shop.name }}" src="//placehold.it/575x300" />
+            {% endif %}
+          </a>
+         
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+"name": "Home Banner Center",
+"class": "home-section",
+"settings": [
+{
+"type": "header",
+"content": "Setting Banner "
+},
+{
+"type": "image_picker",
+"id": "image1",
+"label": "Banner image1"
+},
+
+{
+"type": "image_picker",
+"id": "image2",
+"label": "Banner image2"
+}
+],
+"presets": [
+{
+"name": "Home Banner Center",
+"category": "Image"
+}
+]
+}
+{% endschema %}

@@ -1,0 +1,12 @@
+<div class="block sidebar-banner spaceBlock banners">
+  <div>
+    {% if settings.image_sidebar != blank %}
+
+    <a href="{{ settings.image_sidebar_link }}" title="">
+      <img class="img-responsive lazyload" data-sizes="auto" src="{{ "icon-loadings.svg" | asset_url }}" alt="{{ settings.image_sidebar | default: shop.name }}" data-src="{{ settings.image_sidebar | img_url: 'master' }}" />
+    </a>
+    {% else %}
+    {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+    {% endif %}
+  </div>
+</div>

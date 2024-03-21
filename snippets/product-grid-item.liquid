@@ -1,0 +1,60 @@
+{% if section.settings.image_size != blank %}
+{% assign image_size = section.settings.image_size %}
+{% else %}
+{% assign image_size = 'master' %}
+{% endif %}
+<div class="product-item" data-id="product-{{ product.id }}">
+  <div class="list-view-item {% if sold_out %} sold-out{% endif %} {% unless product.available %} product-price--sold-out grid-view-item--sold-out{% endunless %}">
+    <div class="item-image">
+      <div class="product-image-container product-image">
+        <a class="grid-view-item__link image-ajax" href="{{ product.url | within: collection }}">
+          <img class="img-responsive" src="{{ product.featured_image.src | product_img_url:image_size, crop:'center' }}" alt="{{ product.featured_image.alt }}" />
+        </a>
+
+      </div>
+    </div>
+    <div class="item-info">
+      <div class="caption">
+        {% if settings.show-vendor %}
+        <div class="title-vendor font-ct">{{ product.vendor | link_to_vendor }}</div>
+        {% endif %}
+        {% if settings.show-title %}
+        <h4 class="title-product"><a class="product-name" href="{{ product.url }}">{{ product.title | strip_html | truncate: settings.limit_title }}</a></h4>
+        {% endif %}
+        {% if settings.show-review %}
+        <div class="custom-reviews hidden-xs">          
+          <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>          
+        </div>
+        {% endif %}
+        {% if settings.show-price %}
+        <div class="price">
+          {% include 'product-price' %}
+        </div>
+        {% endif %}
+      </div>
+      <div class="button-link">
+        {% if sold_out %}
+        <button class="btn-addToCart disabled" type="submit" value="Submit" disabled data-toggle="tooltip" title="{{ 'products.product.sold_out' | t }}">
+          <a class="btn_df"><i class="fa fa-shopping-basket"></i><span class="hidden-sm hidden-md hidden-xs">{{ 'products.product.sold_out' | t }}</span></a>
+        </button>
+        {% elsif product.variants.size > 1 %}
+        <div class="btn-button add-to-cart add-sellect">  
+          <a  href="{{ product.url | within: collection }}" class="btn_df grl" title="{{ 'products.product.select_options' | t }}"><i class="fa fa-shopping-basket"></i><span class="hidden-sm hidden-md hidden-xs">{{ 'products.product.select_options' | t }}</span></a>
+        </div>
+        {% else %}
+        <div class="btn-button add-to-cart action  {% if sold_out %}sold-out{% endif %}">    
+          <form action="/cart/add" method="post" class="variants" data-id="AddToCartForm-{{ product.id }}" enctype="multipart/form-data">   
+            <input type="hidden" name="id" value="{{ product.variants[0].id }}" />           
+            <a class="btn-addToCart grl btn_df" href="javascript:void(0)" title="{{ 'products.product.add_to_cart' | t }}"><i class="fa fa-shopping-basket"></i><span class="hidden-sm hidden-md hidden-xs">{{ 'products.product.add_to_cart' | t }}</span></a>
+          </form>  
+        </div>
+        {% endif %}        
+      <!--  {% include 'product-wishlist' %} -->
+        <div class="quickview-button">
+          <a class="quickview iframe-link visible-lg btn_df" href="javascript:void(0)" data-variants_id="{{ product.variants[0].id }}" data-toggle="modal" data-target="#myModal" data-id="{{ product.handle }}" title="{{ 'products.product.quick_view' | t }}"><i class="fa fa-search"></i></a>
+        </div>
+      </div>
+    </div> 
+  </div>
+</div>
+

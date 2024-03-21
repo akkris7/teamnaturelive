@@ -1,0 +1,112 @@
+
+{% unless grid_image_width %}
+{%- assign grid_image_width = '300x300' -%}
+{% endunless %}
+{%- assign grid_image_scale = '2' -%}
+
+{% assign on_sale = false %}
+{% assign sale_text = 'products.product.sale' | t %}
+{% if product.compare_at_price > product.price %}
+{% assign on_sale = true %}
+{% endif %}
+
+{% assign sold_out = true %}
+{% assign sold_out_text = 'products.product.sold_out' | t %}
+{% assign sTT = 'products.product.outOfStock' | t %}
+{% if product.available %}
+{% assign sold_out = false %}
+{% assign sTT = 'products.product.inStock' | t %}
+{% endif %}
+
+<div class="product-item" data-id="product-{{ product.id }}">
+  <div class="product-item-container grid-view-item {% if sold_out %} sold-out{% endif %} {% unless product.available %} product-price--sold-out grid-view-item--sold-out{% endunless %}">
+    <div class="left-block">
+      <div class="product-image-container product-image">
+        <a class="grid-view-item__link image-ajax" href="{{ product.url | within: collection }}">
+          <img class="img-responsive" src="{{ product.featured_image.src | img_url: '170x210', crop: 'center' }}" alt="{{ product.featured_image.alt }}">
+          {% for image in product.images %}     
+          {% if forloop.index == 2 %}
+          <span class="second-img">
+            <img class="s-img" src="{{ image.src | img_url: '170x210', crop: 'center' }}" alt="{{ product.grid_image_width | escape }}">   
+          </span>
+          {% endif %}
+          {% endfor %}
+        </a>
+        <ul class="swatch-list">
+          {% for option in product.options %}
+          {% if option == 'Color' %}
+          {% assign index_loop = forloop.index0 %}      
+          {% assign colorlist = '' %}
+          {% assign color = '' %}
+          {% for variant in product.variants %}
+          {% capture color %}
+          {{ variant.options[index_loop] }}
+          {% endcapture %}
+          {% unless colorlist contains color %} 
+          {% if variant.image.src != blank %}
+          <li><a class="{{ color | downcase }}" href="javascript:void(0);" data-image="{{ variant.image.src | img_url: 'large' }}"><img src="{{ color | downcase | strip_newlines | strip_html | remove: '  ' | append: '.png' | replace: ' ', '-' | asset_url }}" alt="{{ color }}" /></a></li>
+          {% endif %}
+          {% capture tempList %}
+          {{colorlist | append: color | append: ' '}}
+          {% endcapture %}
+          {% assign colorlist = tempList %}
+          {% endunless %}
+          {% endfor %}
+          {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+      {% if sold_out %}
+      <div class="label-sold-out">
+        <span>{{ 'products.product.sold_out_stock' | t }}</span>
+      </div>
+      {% endif %}
+
+      {% if on_sale %}
+      <span class="label-product label-sale"><span class="hidden">{{ 'products.product.on_sale' | t }}</span>
+        -{{ product.selected_or_first_available_variant.compare_at_price | minus: product.selected_or_first_available_variant.price | times: 100.0 | divided_by: product.selected_or_first_available_variant.compare_at_price | money_without_currency | replace: ',', '.' | times: 100 | remove: '.0'}}%</span>
+      {% endif %}
+      {% if product.tags contains "New" %}
+      <span class="label-product label-new">{{ 'general.megamenu_icons.new' | t }}</span>
+      {% endif %}
+      <div class="button-link">
+        <!--{% include 'product-wishlist' %} -->
+        {% if sold_out %}
+        <button class="btn-addToCart disabled" type="submit" value="Submit" disabled data-toggle="tooltip" title="{{ 'products.product.sold_out' | t }}">
+          <a class="btn_df btnProduct"><i class="fa fa-shopping-cart"></i></a>
+        </button>
+        {% elsif product.variants.size > 1 %}
+
+        <div class="btn-button add-to-cart add-sellect">  
+          <a href="{{ product.url | within: collection }}" class="grl btn_df" title=""><i class="fa fa-shopping-cart"></i></a>
+        </div>
+        {% else %}
+
+        <div class="btn-button add-to-cart action  {% if sold_out %}sold-out{% endif %}">    
+          <form action="/cart/add" method="post" class="variants" data-id="AddToCartForm-{{ product.id }}" enctype="multipart/form-data">   
+            <input type="hidden" name="id" value="{{ product.variants[0].id }}" />           
+            <a class="btn-addToCart grl btn_df" href="javascript:void(0)" title="{{ 'products.product.add_to_cart' | t }}"><i class="fa fa-shopping-cart"></i></a>
+          </form>  
+        </div>
+
+        {% endif %}        
+		<div class="quickview-button">
+        <a class="btn_df btnProduct quickview iframe-link visible-lg btn-df" href="javascript:void(0)" data-variants_id="{{ product.variants[0].id }}" data-toggle="modal" data-target="#myModal" data-id="{{ product.handle }}" title="{{ 'products.product.quick_view' | t }}"><i class="fa fa-search"></i></a>
+        </div>
+        
+
+      </div>
+    </div>
+    <div class="right-block">
+      <div class="caption">
+        <h4 class="title-product text-truncate"><a class="product-name" href="{{ product.url }}">{{ product.title }}</a></h4>
+        <div class="custom-reviews hidden-xs">          
+          <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>          
+        </div>
+        <div class="price">
+          {% include 'product-price' %}
+        </div>
+      </div>
+    </div> 
+  </div>
+</div>

@@ -1,0 +1,22 @@
+{%- assign limit = 5 -%}
+{% paginate collection.products by limit %}
+
+<div class="products-listing product-list list {{ section.settings.pagination_style }}">
+  {% if collection.products.size > 0 %}
+  {% for product in collection.products %}
+  <div class="product-layout clearfix" data-price="{{ product.price | money_without_currency }}">
+    {% include 'product-card-list', product: product %}
+  </div>
+  {% endfor %}
+  {% else %}
+  <p class="text-center">{{ 'collections.general.no_matches' | t }}</p>
+  {% endif %}
+ 
+  {% if paginate.pages > 1 %}
+  <div class="d-flex justify-content-center col-12">
+    {% include 'pagination-custom' %}
+  </div>
+  {% endif %}
+
+</div>
+{% endpaginate %}

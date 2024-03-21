@@ -1,0 +1,44 @@
+<div class="form_login">
+  <div id="CustomerLoginForm" class="form-vertical">
+    {% if shop.customer_accounts_optional or shop.customer_accounts_enabled %}
+    {% capture fullname %}{{ customer.first_name }} {{ customer.last_name }}{% endcapture %}
+    {% assign login_html = 'layout.header.login_html' | t:fullname:fullname %}
+    {% assign logout = 'layout.header.logout' | t %}
+    {% assign login = 'layout.header.login' | t %}
+    {% assign register = 'layout.header.register' | t %}
+    {% if customer  %}
+    <h2 class="title_pop">{{ 'customer.login.title_success' | t }} <a class="popup-close" data-target="popup-close" data-popup-close="#popup-log">×</a></h2>
+    <ul class="form_log">
+    <li><a class="account" rel="nofollow" href="/account"><i class="fa fa-user-secret" aria-hidden="true"></i>{{ login_html }}</a></li>
+    <li><i class="fa fa-unlock-alt" aria-hidden="true"></i> {{ logout | customer_logout_link }}</li>
+    </ul>
+    {% else %}
+    <h2 class="title_pop">{{ 'customer.login.title_popup' | t }} <a class="popup-close" data-target="popup-close" data-popup-close="#popup-categories">×</a></h2>
+    {% form 'customer_login' %}
+
+    <label for="CustomerEmail" class="hidden">{{ 'customer.login.email' | t }}</label>
+    <i class="fa fa-user"></i>
+    <input required  placeholder="User name or Email" type="email" name="customer[email]" id="CustomerEmail" class="form-of {% if form.errors contains 'email' %} input--error{% endif %}" autofocus>
+
+    {% if form.password_needed %}
+    <label for="CustomerPassword" class="hidden">{{ 'customer.login.password' | t }}</label>
+    <i class="fa fa-lock"></i>
+    <input required placeholder="Passwork" type="password" value="" name="customer[password]" id="CustomerPassword" class="form-of {% if form.errors contains 'password' %} input--error{% endif %}">
+    {% endif %}
+
+    <div class="text-center">
+      <input type="submit" class="btn btn-submit" value="{{ 'customer.login.sign_in' | t }}">
+      {% if form.password_needed %}
+      <p><a href="/account/login/#recover">{{ 'customer.login.forgot_password' | t }}</a></p>
+      {% endif %}
+
+      <p>
+        {{ 'layout.customer.create_account' | t | customer_register_link }}
+      </p>
+    </div>
+
+    {% endform %}
+    {% endif %}
+    {% endif %}
+  </div>
+</div>

@@ -1,0 +1,12 @@
+{% comment %}
+<div class="block sidebar-html">
+  {% if settings.custom_html_title != blank %}
+  <h3 class="block-title"><strong><span>{{ settings.custom_html_title | escape  }}</span></strong></h3>
+  {% endif %}
+  <div class="widget-content">
+    {% if settings.custom_html_text != blank %}
+    <div class="rte-setting">{{ settings.custom_html_text }}</div>
+    {% endif %}
+  </div>
+</div>
+{% endcomment %}

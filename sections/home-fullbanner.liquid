@@ -1,0 +1,92 @@
+
+
+{% if section.settings.show_section %}
+<div class="widget_multibanner radius_3">
+  <div class="container">
+    {% if section.settings.title != blank %}
+    <h3 class="widget-title hidden">{{ section.settings.title }}</h3>
+    {% endif %}
+    <div class="widget-content">
+        {%- if section.blocks.size > 0 -%}
+        {%- for block in section.blocks -%}
+        <div class="item_banner item{{ forloop.index }}">
+          <div class="banners">
+            <div>
+             
+              <a href="#" title="{{ block.settings.image.alt | default: shop.name }}">
+                {% if block.settings.image != blank %}
+                <img class="img-responsive lazyload" data-sizes="auto" src="{{ "icon-loadings.svg" | asset_url }}" alt="{{ block.settings.image.alt | default: shop.name }}" data-src="{{ block.settings.image | img_url: 'master' }}" />
+                {% else %}
+                <img class="img-responsive" alt="{{ shop.name }}" src="//placehold.it/{{ section.settings.size_image }}" />
+                {% endif %}
+               </a>
+             
+            </div>
+             <h4 class="titile">
+                <a href="#">
+                {{ block.settings.title }}
+                </a>
+              </h4>
+          </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+  </div>
+</div>
+{% endif %}
+{% schema %}
+{
+  "name": "Home Multi-Banner",
+  "class": "home-section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_section",
+      "label": "Display Section?",
+      "default": true
+    },
+	
+    {
+      "type": "text",
+      "id": "title",
+      "placeholder": "Title for Block",
+      "label": "Title"
+    },
+   
+	{
+      "type": "text",
+      "id": "size_image",
+      "label":"Image Placeholder",
+      "default":"218x90"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image item",
+      "settings": [
+
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "label": "Title"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Banner image"
+        }
+        
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Home Multi-Banner",
+      "category": "Image"
+    }
+  ]
+}
+{% endschema %}

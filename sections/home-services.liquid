@@ -1,0 +1,106 @@
+
+<div class="widget-services">
+  <div class="container">
+    <div class="home-services">
+      <div class="services-inline">
+        {% if section.settings.title != blank %}<h3 class="title-home hidden">{{ section.settings.title }}</h3>{% endif %}
+        {% if section.blocks.size > 0 %}
+
+
+        {% for block in section.blocks %}
+        {% assign col2 = forloop.index %} 
+        {% if col2 == 1  %}
+        <div class="policy policy{{ forloop.index0 }}">
+          {% endif %}
+          <div class="policy_inner">
+            {% if block.settings.show_image !=blank %}
+            <div class="service-ico">
+              <a class="image" href="#">
+                {% if block.settings.image != blank %}
+                <img class="img-responsive" alt="{{ block.settings.image.alt | default: shop.name }}" src="{{ block.settings.image | img_url:'master' }}" />
+                {% else %}
+                <img class="img-responsive" alt="{{ shop.name }}" src="//placehold.it/50x50" />
+                {% endif %}
+              </a>
+            </div>
+            {% endif %}
+            <div class="service-info">
+              {% if block.settings.title != blank %}<h2 class="title"><a href="#">{{ block.settings.title }}</a></h2>{% endif %}
+              {% if block.settings.description != blank %}<p class="des">{{ block.settings.description }}</p>{% endif %}
+            </div>
+          </div>
+          {% if col == 0 or forloop.last  %}
+        </div>
+        {% endif %}
+        {% endfor %}
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+</div>
+{% schema %}
+{
+"name": "Home Services",
+"class": "home-section clearfix",
+"settings":[
+{
+"type": "header",
+"content": "General Settings"
+},
+
+{
+"type": "text",
+"id": "title",
+"label": "Title",
+"placeholder": "Title",
+"default": "false"
+}
+],
+"blocks": [
+{
+"type": "box",
+"name": "Service Item",
+"settings": [
+
+{
+"type": "checkbox",
+"id": "show_image",
+"label": "Show image",
+"default": false
+},
+{
+"type": "image_picker",
+"id": "image",
+"label": "image icon"
+},
+{
+"type": "text",
+"id": "title",
+"label": "Title",
+"placeholder": "Title",
+"default": "Free Shipping & Return"
+},
+
+{
+"type": "text",
+"id": "description",
+"label": "Description",
+"placeholder": "Title",
+"default": "Free shipping on orders over $49"
+}
+
+]
+}
+],
+"presets": [
+{
+"name": "Home Services",
+"category": "Services",
+"settings":{
+"title":"Home Services"
+}
+}
+]
+}
+{% endschema %}

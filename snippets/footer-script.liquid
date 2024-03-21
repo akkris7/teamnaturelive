@@ -1,0 +1,9 @@
+{% include 'currencies' %}
+{% if template contains 'collection' %}
+{{ 'jquery.ajaxify.js' | asset_url | script_tag }}
+<script>
+  jQuery(document).ready(function(){
+    ajaxify();
+  });
+</script>
+{% endif %}

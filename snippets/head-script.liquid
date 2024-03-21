@@ -1,0 +1,56 @@
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" ></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="{{'slick.min.js' | asset_url}}" ></script>
+<script src="{{'ss_custom.js' | asset_url}}" ></script>
+<script src="{{'jquery-cookie.min.js' | asset_url}}" ></script>
+<script src="{{'api.jquery.js' | shopify_asset_url }}" ></script>
+<script src="{{'libs.js' | asset_url}}" ></script>
+<script src="{{'wish-list.js' | asset_url}}" ></script>
+<script src="{{'owl.carousel.min.js' | asset_url}}" ></script>
+<script src="{{'option_selection.js' | shopify_asset_url }}" ></script>
+<script src="{{'sticky-kit.min.js' | asset_url}}" ></script>
+{% if template contains 'customers' %}
+<script src="{{'shopify_common.js' | shopify_asset_url }}" ></script>
+{% endif %}
+{% if template contains 'product' %}
+<script src="{{'jquery.fancybox.pack.js' | asset_url}}" ></script>
+{% endif %}
+
+<script>
+  
+  window.money_format = "{{shop.money_with_currency_format}}";
+  window.shop_currency = "{{ shop.currency }}";
+  window.show_multiple_currencies = {{settings.show_multiple_currencies}};
+  window.use_color_swatch = {{settings.use_color_swatch}};
+  window.file_url = "{{''|file_url}}"; 
+  window.theme_load = "{{ 'ajax-loader.gif' | asset_url}}"; 
+  window.filter_mul_choice = true;
+  //Product Detail - Add to cart
+  window.btn_addToCart = '#btnAddtocart';
+  window.product_detail_form = '#AddToCartForm';
+  window.product_detail_name = '.product-info h1';
+  window.product_detail_mainImg = '.product-single-photos img';
+  window.addcart_susscess = "{{ addcart-susscess}}";
+  window.cart_count = ".mini-cart .cart-count";
+  window.cart_total = ".mini-cart .cart-total";
+  window.addcart_susscess = "{{ addcart-susscess}}";
+  window.trans_text = {
+    in_stock: "{{ 'products.product.in_stock' | t }}",
+    many_in_stock: "{{ 'products.product.many_in_stock' | t }}",
+    out_of_stock: "{{ 'products.product.out_of_stock' | t }}",
+    add_to_cart: "{{ 'products.product.add_to_cart' | t }}",
+    sold_out: "{{ 'products.product.sold_out' | t }}",
+    unavailable: "{{ 'products.product.unavailable' | t }}"
+  };
+
+</script>
+
+
+
+
+
+
+
+
+

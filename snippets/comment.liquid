@@ -1,0 +1,11 @@
+<!-- /snippets/comment.liquid -->
+<div>
+<div class="comment__meta">
+  <span class="comment-user">{{ comment.author }}</span>
+  <span class="comment-time"><i class="fa fa-clock-o" aria-hidden="true"></i>{{ comment.created_at | time_tag: format: 'month_day_year' }}</span>
+</div>
+<div class="comment__content rte">
+  {{ comment.content }}
+</div>
+</div>
+

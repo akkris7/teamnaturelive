@@ -1,0 +1,97 @@
+{% include 'breadcrumb' %}
+
+<div id="account-page">
+  <div class="container">
+    <div class="account-box">
+      <h1 class="page-title">Hello, {{ customer.name }}</h1>
+      <div class="teb_account">
+        <ul class="nav nav-tabs tab-info page-product-heading" id="myTab" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#idTab1" role="tab" aria-controls="home" aria-selected="true">{{ 'customer.orders.title' | t }}</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#idTab2" role="tab" aria-controls="profile" aria-selected="false">My Shipping Address</a>
+          </li>
+         <!-- <li class="nav-item">
+            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#idTab3" role="tab" aria-controls="profile" aria-selected="false">Coming Soon Tab</a>
+          </li> -->
+        </ul>
+        <div class="tab-content">
+          <section class="tab-pane page-product-box fade show active" id="idTab1" role="tabpanel" aria-labelledby="home-tab">
+            <div class="order-account">
+              <h5>{{ 'customer.orders.title' | t }}</h5>
+                <div class="well block">
+                {% paginate customer.orders by 10 %}
+                {% if customer.orders.size != 0 %}
+
+                <table class="responsive-table table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>{{ 'customer.orders.order_number' | t }}</th>
+                      <th>{{ 'customer.orders.date' | t }}</th>
+                      <th>{{ 'customer.orders.payment_status' | t }}</th>
+                      <th>{{ 'customer.orders.fulfillment_status' | t }}</th>
+                      <th>Order Details</th>  
+                      <th>{{ 'customer.orders.total' | t }}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for order in customer.orders %}
+                    <tr>
+                      <td data-label="{{ 'customer.orders.order_number' | t }}">
+                        <a href="{{ order.customer_url }}" class="btn btn--secondary btn--small">{{ order.name }}</a>
+                      </td>
+                      <td data-label="{{ 'customer.orders.date' | t }}">{{ order.created_at | date: format: 'month_day_year' }}</td>
+                      <td data-label="{{ 'customer.orders.payment_status' | t }}">{{ order.financial_status_label }}</td>
+                      <td data-label="{{ 'customer.orders.fulfillment_status' | t }}">{{ order.fulfillment_status_label }}</td>
+                      <td><a href="{{ order.customer_url }}" title="Track Your Order" style="color:#0066c0" target="_blank">View Detail</a></td>
+                      <td data-label="{{ 'customer.orders.total' | t }}">{{ order.total_price | money }}</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+
+                {% else %}
+
+                <p>{{ 'customer.orders.none' | t }}</p>
+
+                {% endif %}
+                {% if paginate.pages > 1 %}
+                {% include 'pagination' %}
+                {% endif %}
+                {% endpaginate %}
+              </div>
+            </div>
+          </section>
+
+          <section id="idTab2" class="tab-pane page-product-box">
+            <h5 class="block-title">{{ 'customer.account.details' | t }}</h5>
+            <div class="well">
+             
+
+              {{ customer.default_address | format_address }}
+              <p>
+                
+              E-mail :  {{ customer.email  }}
+              <br>
+              Phone :  {{ customer.default_address.phone }}
+              
+             
+              <p><a href="/account/addresses" class="btn btn--small">{{ 'customer.account.view_addresses' | t }} ({{ customer.addresses_count }})</a></p>
+            </div>
+          </section>
+          <section id="idTab3" class="tab-pane">
+            <div class="well">
+           <!-- <div class="alert alert-warning alert-dismissible"> Shajesh removed -->
+              <h5 class="block-title"> <strong>Coming Soon</strong>  </h5>
+              Subscribe to the newsletter to stay in the latest news
+            </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+    <div class="btn btn-default">{{ 'layout.customer.log_out' | t | customer_logout_link }}</div>
+  </div>
+</div>

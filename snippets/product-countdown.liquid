@@ -1,0 +1,8 @@
+{% for tag in product.tags %} 
+{% if tag contains "deal" %}
+<div class="countdown_tab">
+  <div class="countdown_inner" data-date="{{ tag | remove:"deal" }}"></div>
+</div>
+{% endif %} 
+{% endfor %}
+

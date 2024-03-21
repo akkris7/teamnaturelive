@@ -1,0 +1,68 @@
+
+{%- assign sidebar 			= settings.enable_collection_sidebar -%}
+{%- assign sidebar_position 	= settings.sidebar_position -%}
+{% include 'breadcrumb' %}
+
+
+
+<div class="container{% if sidebar %} positon-sidebar{% endif %}">
+  {% if sidebar and sidebar_position == 'left' %}
+  <div class="row">
+    <div class="col-sidebar sidebar-fixed col-lg-3">
+      {% include 'sidebar-collection' %}
+    </div>
+    <div class="sidebar-overlay"></div>
+    <div class="col-main col-lg-9 col-12">
+      <a href="javascript:void(0)" class="open-sidebar d-lg-none"><i class="fa fa-bars"></i> Sidebar</a>
+      {% section 'collection-infos' %}
+      {% section 'collection-template' %}
+    </div>
+  </div>
+  {% elsif sidebar and sidebar_position == 'right' %}
+  <div class="row">
+    <div class="col-main col-lg-9 col-12">
+      <a href="javascript:void(0)" class="open-sidebar d-lg-none"><i class="fa fa-bars"></i> Sidebar</a>
+      {% section 'collection-infos' %}
+      {% section 'collection-template' %}
+    </div>
+    <div class="col-sidebar sidebar-fixed col-lg-3">
+      {% include 'sidebar-collection' %}
+    </div>
+    <div class="sidebar-overlay"></div>
+  </div>
+  {% else %}
+  <div class="col-main col-full">
+    {% section 'collection-infos' %}
+    <div class="col-sidebar sidebar-fixed">
+      <span id="close-sidebar" class="btn-fixed d-lg-none"><i class="fa fa-times"></i></span>
+      {% section 'sidebar-filter-collection' %}
+    </div>
+    {% section 'collection-template' %}
+  </div>
+  {% endif %}
+</div>
+
+
+
+
+<script>
+  $(".open-sidebar").click(function(e){
+
+    $(".sidebar-overlay").toggleClass("show");
+    $(".sidebar-fixed").toggleClass("active");
+  });
+  $( ".open-fiter" ).click(function() {
+    $('.sidebar-fixed').slideToggle(200);
+    $(this).toggleClass('active');
+  });
+  $(".sidebar-overlay").click(function(e){
+
+    $(".sidebar-overlay").toggleClass("show");
+    $(".sidebar-fixed").toggleClass("active");
+  });
+  $('#close-sidebar').click(function() {
+    $('.sidebar-overlay').removeClass('show');
+    $('.sidebar-fixed').removeClass('active');
+
+  }); 
+</script>

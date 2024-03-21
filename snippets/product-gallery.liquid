@@ -1,0 +1,13 @@
+<ul class="{% if settings.gallery_tyle == 'gallery-left' %}product-card__left {% elsif settings.gallery_tyle == 'gallery-right'%}product-card__right {% else %}product-card__bottom {% endif %}product-card__gallery">
+  {% for image in product.images limit: settings.limit_gallery %}
+  {% if forloop.first %}
+  <li class="item-img thumb-active" data-src="{{ image.src | product_img_url: 'master' }}">
+    <img class="lazyload" data-sizes="auto" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ image.src | product_img_url: '40x40' }}" alt="{{ image.alt | escape }}">
+  </li>
+  {% else %}
+  <li class="item-img" data-src="{{ image.src | product_img_url: 'master' }}">
+    <img class="lazyload" data-sizes="auto" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="  data-src="{{ image.src | product_img_url: '40x40' }}" alt="{{ image.alt | escape }}">
+  </li>
+  {% endif %}
+  {% endfor %}
+</ul>

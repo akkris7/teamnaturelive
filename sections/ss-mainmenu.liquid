@@ -1,0 +1,417 @@
+{% comment %}
+  MAGENTECH 
+  Based on FrameWork v1.0.1 | SN License |
+  DOCUMENT: https://help.shopify.com/manual/sell-online/online-store/menus-and-links
+{% endcomment %}
+
+{% assign main_links = section.settings.main_linklist %}
+<div class="main-megamenu d-none d-lg-block">
+  <nav class="main-wrap">
+    <ul class="main-navigation nav hidden-tablet hidden-sm hidden-xs">
+      {% for link in linklists[main_links].links %}
+      {% assign child_list_handle = link.title | handleize -%}
+      {% assign menu_type = false %}
+      {% assign i = forloop.index | downcase %}
+
+
+      {% for block in section.blocks %}
+      {% for i in (1..4) %}
+      {% assign j = meg  %}
+      {% capture enable %}meg_{{ j }}{% endcapture %}
+      {% capture width %}cal_width{% endcapture %}
+      {% capture align %}cal_align{% endcapture %}
+      {% capture alignMargin %}cal_align_margin{% endcapture %}
+      {% capture customWidth %}customWidth{% endcapture %}
+
+      {% assign _width 			= block.settings[width] %}
+      {% assign _align 			= block.settings[align] %}
+      {% assign _alignMargin 	= block.settings[alignMargin] %}
+      {% assign _customWidth 	= block.settings[customWidth] %}
+
+      {% if _width == "custom" %}
+      {% capture style %}
+      {% if _customWidth != "" %} width:{{_customWidth}};{% endif %}
+      {% if _alignMargin != "" %} 
+      margin-left: {{_alignMargin}} !important;
+      {% endif %}
+
+      {% endcapture %}
+      {% endif %}
+      {% assign _col_menu 		= block.settings.menu_col_column %}
+      {% assign _col_item 		= block.settings.menu_item_col %}
+      {% assign _col_product 		= block.settings.product_col_column %}
+      {% assign _col_item_product	= block.settings.product_item_col %}
+      {% assign _col_banner 	= block.settings.banner_col_column %}
+      {% assign _col_banner2 	= block.settings.banner_col_column2 %}
+      {% assign _col_banner3 	= block.settings.banner_col_column4 %}
+      {% assign _col_page 		= block.settings.page_col_column %}
+      {% assign _menu 			= block.settings.item_linklist %}
+      {% assign _link_item 		= link.title %}
+      {% assign _custom_class 	= block.settings.mega_class %}
+      {% capture cap_main_linklist %}main_linklist_{{ i }}{% endcapture %}
+      {% assign main_linklist = block.settings[cap_main_linklist] %}
+      {% if block.settings.title contains _link_item %}
+      <li class="ss_menu_lv1 menu_item menu_item_drop{% if section.settings.show_dropdown_arrow %} arrow{% endif %}{% if link.active %} active{% endif %}{% if menu_type %} dropdown{% else %}{% if linklists[link.handle] != empty %} dropdown{% endif %}{% endif %}">      
+        <a href="{{ link.url }}" title="">
+         
+          <span class="ss_megamenu_title">{{ link.title }}</span>
+        </a>
+        <div class="ss_megamenu_dropdown megamenu_dropdown width-{{_width}} {{_align}} {{ _custom_class }}" {% if block.settings.cal_width == 'custom' %}style="{{style}}"{% endif %}>
+            <div class="row">
+              {% if block.settings.navi_show %}
+              <div class="ss_megamenu_col col_menu col-lg-{{ _col_menu }}">
+                <div class="ss_inner">
+                  <div class="row">
+                    {% for link1 in linklists[_menu].links %}
+                    {% assign child_list_handle = link1.title | handleize %}
+                    <div class="ss_megamenu_col col-md-{{ _col_item }}">
+                      <ul class="menulink">
+                        <li class="ss_megamenu_lv2 megatitle{% if link1.active %} active{% endif %}">
+                          <a href="{{ link1.url }}" title="">{{ link1.title }}</a>
+                        </li>
+                        {% for link2 in linklists[child_list_handle].links %}
+                        <li class="ss_megamenu_lv3 {% if link2.active %}active{% endif %}">
+                          <a href="{{ link2.url }}" title="">{{ link2.title }}</a>
+                        </li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+              {% endif %}
+
+            </div>
+         
+        </div>
+      </li>
+      {% assign menu_type = true %}
+      {% break %}
+      {% endif %}
+      {% endfor %}
+      {% endfor %}
+      {% if menu_type == false %}
+      {% if linklists[child_list_handle].links != blank %}
+      <li class="ss_menu_lv1 menu_item menu_item_drop menu_item_css{% if section.settings.show_dropdown_arrow %} arrow{% endif %}{% if link.active %} active{% endif %}">
+        <a href="{{ link.url }}" class="ss_megamenu_head" title="">
+        
+     
+          <span class="ss_megamenu_title">{{ link.title }}</span>
+          {% comment %} 
+          {% include 'icon-chevron-down' %}
+          {% endcomment %}
+          <span class="visually-hidden">{{ 'layout.navigation.expand' | t }}</span>
+        </a>
+        {% assign link_child = link.handle %}
+        {% include 'mega_dropdown' with link_child %}
+      </li>
+      {% else %}
+      <li class="ss_menu_lv1 menu_item{% if link.active %} active{% endif %}">
+        <a href="{{ link.url }}" title="">
+    
+          <span class="ss_megamenu_title">{{ link.title | escape }}</span>
+        </a>
+      </li>
+      {% endif %}
+      {% endif %}
+      {% endfor %}
+    </ul>
+  </nav>
+</div>
+
+<div class="navigation-mobile mobile-menu d-block d-lg-none">
+  {% if settings.logo_img_nav %}
+  <div class="logo-nav">
+  {% if settings.logo_img_nav %}
+  <a href="/"  class="site-header-logo-image">
+    {% capture image_size %}{{ settings.logo_max_width_nav }}x{% endcapture %}
+    <img src="{{ settings.logo | img_url: image_size }}"
+         srcset="{{ settings.logo | img_url: image_size }}"
+         alt="{{ settings.logo.alt | default: shop.name }}">
+  </a>
+  {% else %}
+  <h2><a class="site-header-logo-link" href="/">Logo</a></h2>
+  {% endif %}
+    <div class="menu-remove">
+      <div class="close-megamenu"><i class="material-icons">clear</i></div>
+	</div>
+  </div>
+  {% endif %}
+	
+	<ul class="site_nav_mobile active_mobile">
+      {% for link in linklists[main_links].links %}
+      {% assign child_list_handle = link.title | handleize -%}
+      {% assign menu_type = false %}
+      {% assign i = forloop.index | downcase %}
+
+
+
+      {% for block in section.blocks %}
+      {% for i in (1..4) %}
+      {% assign j = meg  %}
+      {% capture enable %}meg_{{ j }}{% endcapture %}
+      {% capture width %}cal_width{% endcapture %}
+      {% capture align %}cal_align{% endcapture %}
+      {% capture alignMargin %}cal_align_margin{% endcapture %}
+      {% capture customWidth %}customWidth{% endcapture %}
+
+      {% assign _width 			= block.settings[width] %}
+      {% assign _align 			= block.settings[align] %}
+      {% assign _alignMargin 	= block.settings[alignMargin] %}
+      {% assign _customWidth 	= block.settings[customWidth] %}
+
+      {% if _width == "custom" %}
+      {% capture style %}
+      {% if _customWidth != "" %} width:{{_customWidth}};{% endif %}
+      {% if _alignMargin != "" %} margin-left: {{_alignMargin}} !important;
+      {% endif %}
+
+      {% endcapture %}
+      {% endif %}
+      {% assign _col_menu 			= block.settings.menu_col_column %}
+      {% assign _col_item 			= block.settings.menu_item_col %}
+      {% assign _col_product 		= block.settings.product_col_column %}
+      {% assign _col_item_product	= block.settings.product_item_col %}
+      {% assign _col_banner 		= block.settings.banner_col_column %}
+      {% assign _col_banner2 		= block.settings.banner_col_column2 %}
+      {% assign _col_banner3 		= block.settings.banner_col_column4 %}
+      {% assign _col_page 			= block.settings.page_col_column %}
+      {% assign _menu 				= block.settings.item_linklist %}
+      {% assign _link_item 			= link.title %}
+      {% capture cap_main_linklist %}main_linklist_{{ i }}{% endcapture %}
+      {% assign main_linklist = block.settings[cap_main_linklist] %}
+      {% if block.settings.title contains _link_item %}
+      <li class="menu-item toggle-menu{% if link.active %} active{% endif %} {% if menu_type %}dropdown{% else %}{% if linklists[link.handle] != empty %} dropdown{% endif %}{% endif %}">      
+        <a href="{{ link.url }}" title="" class="ss_megamenu_title">
+          {{ link.title }}
+          <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span>
+        </a>
+        
+        <div class="sub-menu">
+          <div class="row">
+            {% if block.settings.navi_show %}
+            <div class="col-lg-{{ _col_menu }} col-12 spaceMega">
+              <div class="row">
+                {% for link1 in linklists[_menu].links %}
+                {% assign child_list_handle = link1.title | handleize %}
+                  <div class="col-12">
+                    <a class="megatitle{% if link1.active %} active{% endif %}" href="{{ link1.url }}" title="">
+                      {{ link1.title }}{% if linklists[child_list_handle] != empty %}<span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span> {% endif %}
+                    </a>
+                    {% if linklists[child_list_handle] != empty %}
+                    <ul class="sub-menu">
+                      {% for link2 in linklists[child_list_handle].links %}
+                        <li class="menu-item {% if link2.active %}active{% endif %}">
+                          <a href="{{ link2.url }}" title="">{{ link2.title }}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                  </div>
+                  {% endfor %}
+              </div>
+            </div>
+            {% endif %}
+        
+     
+          </div>
+        </div>
+      </li>
+      {% assign menu_type = true %}
+      {% break %}
+      {% endif %}
+      {% endfor %}
+      {% endfor %}
+      {% if menu_type == false %}
+      {% if linklists[child_list_handle].links != blank %}
+      <li class="menu-item toggle-menu{% if link.active %} active{% endif %} {% if linklists[link.handle] != empty %} dropdown{% endif %}">
+        <a  class="ss_megamenu_title ss_megamenu_head" href="{{ link.url }}" title="">
+          {{ link.title }}
+          <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span>
+        </a>
+        {% assign link_child = link.handle %}
+        <ul class="sub-menu">
+          {% for link1 in linklists[child_list_handle].links %}
+          {% assign child_list_handle = link1.title | handleize %}
+          {% if linklists[child_list_handle].links != blank %}
+          <li class="menu_item toggle-menu{% if link1.active %} active{% endif %}">
+            <a href="{{ link1.url }}" class="menu-title{% if forloop.last %} ss_megamenu_head_last{% endif %}" title="">{{ link1.title }} <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span></a>
+            <ul class="sub-menu">
+              {% for link2 in linklists[child_list_handle].links %}
+              {% assign child_list_handle = link2.title | handleize %}
+              {% if linklists[child_list_handle].links != blank %}
+              <li class="menu_item toggle-menu{% if link2.active %} active{% endif %}">
+                <a class="menu-title" href="{{ link2.url }}" title="">{{ link2.title | escape }}<span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span></a>
+                <ul class="sub-menu">
+                  {% for link3 in linklists[child_list_handle].links %}
+                  <li class="menu_item{% if link3.active %} active{% endif %}">
+                    <a class="menu-title" href="{{ link3.url }}" title="">{{ link3.title | escape }}</a>
+                  </li>
+                  {% endfor %}
+                </ul>
+              </li>
+              {% else %}
+              <li class="menu_item{% if link2.active %} active{% endif %}">
+                <a class="menu-title" href="{{ link2.url }}" title="">{{ link2.title | escape }}</a>
+              </li>
+              {% endif %}
+              {% endfor %}
+            </ul>
+          </li>
+          {% else %}
+          <li class="menu_item {% if link1.active %}active{% endif %}">
+            <a class="menu-title" href="{{ link1.url }}" title="">{{ link1.title | escape }}</a>
+          </li>
+          {% endif %}
+          {% endfor %}
+        </ul>
+      </li>
+      {% else %}
+      <li class="menu-item {% if link.active %} active{% endif %}">
+        <a href="{{ link.url }}" title="">
+          <span class="ss_megamenu_title">{{ link.title | escape }}</span>
+        </a>
+      </li>
+      {% endif %}
+      {% endif %}
+      {% endfor %}
+  </ul>
+</div>
+<div class="mobile-screen d-block d-lg-none">&nbsp;</div>
+{% schema %}
+    {
+        "name": "Menu Navigation",
+		"max_blocks": 10,
+      	"settings": [
+            {
+              "type": "header",
+              "content": "Menu Garenal Settings"
+            },
+            {
+                "type": "link_list",
+                "id": "main_linklist",
+                "label": "Main Menu Select",
+                "default": "main-menu"
+            },
+	
+          
+			{
+              "type": "checkbox",
+              "id": "show_dropdown_arrow",
+              "label": "Show dropdown arrow icon?"
+            }
+       
+		
+		],
+        "blocks": [
+            {
+                "type": "text",
+                "name": "Megamenu Item",
+                "settings": [
+     				{
+                        "type": "header",
+                        "content": "Menu item Settings"
+                    },
+					{
+                      "type": "text",
+                      "id": "title",
+                      "label": "Parent of Megamenu",
+                      "default": "Catalog",
+                      "info": "For ex: Catalog "
+                    },
+					{
+                      "type": "radio",
+                      "id": "cal_width",
+                      "label": "Width of megamenu",
+                      "options": [
+                        {
+                          "value": "custom",
+                          "label": "Custom"
+                        },
+                        {
+                          "value": "full",
+                          "label": "Full"
+                        }
+                      ],
+                      "default": "full"
+                    },
+                    {
+                      "type": "text",
+                      "id": "customWidth",
+                      "label": "Custom width (px)"
+                    },
+					{
+                        "type": "text",
+                        "id": "mega_class",
+                        "label": "Class Custom Dropdown",
+                        "info": "Used Class Custom css. Only Used For Dropdown Mega"
+                    },
+                    {
+                      "type": "radio",
+                      "id": "cal_align",
+                      "label": "Align ( not work with full width)",
+                      "options": [
+                        {
+                          "value": "left",
+                          "label": "Left"
+                        },
+                        {
+                          "value": "right",
+                          "label": "Right"
+                        }
+                      ],
+                      "default": "left"
+                    },
+                    {
+                      "type": "text",
+                      "id": "cal_align_margin",
+                      "label": "Margin left (px)",
+                      "default": "0px"
+                    },
+					{
+                        "type": "header",
+                        "content": "Navigation Menu Link"
+                    },
+					{
+                        "type": "checkbox",
+                        "id": "navi_show",
+                        "label": "Enable Navigation",
+						"default": false
+                    },
+					{
+                      "type": "link_list",
+                      "id": "item_linklist",
+                      "label": "Select Menu"
+                    },
+					{
+                        "type":      "range",
+                        "id":        "menu_col_column",
+                        "min":       1,
+                        "max":        12,
+                        "step":       1,
+                       
+                        "label":     "Menu Column",
+                        "default":   12,
+						"info": "Column menu. For ex: 12= Width: 100%"
+                    },
+					{
+                        "type":      "range",
+                        "id":        "menu_item_col",
+                        "min":       1,
+                        "max":        12,
+                        "step":       1,
+
+                        "label":     "Item Column",
+                        "default":   12,
+						"info": "This field is applicable only for top-level menu. For ex: 12= Width: 100%"
+                    }
+					
+                   
+					
+                    
+                ]
+            }
+        ]
+    }
+{% endschema %}

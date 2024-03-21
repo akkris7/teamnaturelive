@@ -1,0 +1,27 @@
+    {% case media.media_type %}
+      {% when 'image' %}
+		<div class="thumb">
+              <a class="fancybox" rel="gallery1" href="{{ media.src | product_img_url: '1024x' }}" >
+                <img id="product-featured-image-{{media.id}}" class="image-zoom product-featured-img" src="{{ media | img_url: '480x480' }}" alt="{{ media.alt | escape }}" data-zoom-image="{{ media.src | img_url: 'original' }}" data-zoom="{{ media | img_url: '1024x1024', scale: 2 }}"/>
+              </a>
+        </div>
+      {% when 'external_video' %}
+        <div class="product-single__media"  data-media-id="{{ media.id }}">
+          {{ media | external_video_tag }}
+        </div>
+
+
+
+      {% when 'video' %}
+        <div class="product-single__media" data-media-id="{{ media.id }}">
+          {{ media | video_tag: controls: true }}
+        </div>
+      {% when 'model' %}
+        <div class="product-single__media" data-media-id="{{ media.id }}">
+          {{ media | model_viewer_tag }}
+        </div>
+      {% else %}
+        <div class="product-single__media"  data-media-id="{{ media.id }}">
+          {{ media | media_tag }}
+        </div>
+    {% endcase %}

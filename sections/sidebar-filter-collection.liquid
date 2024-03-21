@@ -1,0 +1,390 @@
+{{ 'jquery.history.js' | asset_url | script_tag }}
+{{ 'ss-filter-shopby.js' | asset_url | script_tag }}
+{% comment %}
+<div class="block widget-filter yt-left-wrap clearfix">
+  <div id="layered-navigation">
+    <div class="block block-layered-nav">
+      <div class="block-title">
+        <strong><span>{{ 'collections.sidebar.shopby' | t }}</span></strong>
+      </div>
+      <div class="block-content">
+        <dl id="narrow-by-list">
+          <div class="filter-tags{% if settings.enable_collection_sidebar %}{% else %} row{% endif %}">
+            {% for block in section.blocks %}
+            {% case block.type %}
+            {% when 'filter_color' %}
+            {% if block.settings.enable %}
+            <div class="{% if settings.enable_collection_sidebar %}{% else %}col-12 col-xl-3 col-sm-6 {% endif %}{{ block.settings.title }}">
+              {% if block.settings.title != blank %}
+              <dt>
+                <span class="category-filter">{{ block.settings.title }}</span>
+                <a href="javascript:void(0)" class="clear" style="display:none">
+                  <i class="fa fa-trash" aria-hidden="true"></i> {{ 'collections.sidebar.clear' | t }}
+                </a>
+              </dt>
+              {% endif %}
+              <dd class="filter-color">
+                <ol>
+                  {% for i in (1..20) %}
+                  {% capture color_text %}color_text_{{ i }}{% endcapture %}
+                  {% capture color %}color_img_{{ i }}{% endcapture %}
+
+                  {% if block.settings[color] != blank %}
+                  {%- assign img_url = block.settings[color] | img_url: '34x34' -%}
+                  {% else %}
+                  {%- assign img_url = '' -%}
+                  {% endif %}
+
+                  {% if color_text != blank %}
+                  {% assign tag = block.settings[color_text] | strip %}
+                  {% if collection.tags contains tag %} 
+                  <li class="{{ tag | handleize }} {% if current_tags contains tag %}checked{% endif %}">
+                    {% assign tag_value = tag | handleize %}
+                    <input type="checkbox" value="{{ tag_value }}" {% if current_tags contains tag %}checked{% endif %}/>
+                    <a href="javascript:void(0)"  {% if current_tags contains tag %} class="active" {% endif %} title="{{tag}}">
+                      <img src="{{ img_url }}" alt="">
+                    </a>
+                  </li>
+                  {% endif %}
+                  {% endif %}
+                  {% endfor %}
+                </ol>
+              </dd>
+            </div>
+            {% endif %}
+            {% when 'filter_tag' %}
+            {% if block.settings.enable %}
+            <div class="{% if settings.enable_collection_sidebar %}{% else %}col-12 col-xl-3 col-sm-6 {% endif %}{{ block.settings.title }}">
+              {% assign tags = block.settings.list_tags | split: ',' %}
+              {% if block.settings.title != blank %}
+              <dt>
+                <span class="category-filter">{{ block.settings.title }}</span>
+                
+                <a href="javascript:void(0)" class="clear" style="display:none">
+                  <i class="fa fa-trash" aria-hidden="true"></i> {{ 'collections.sidebar.clear' | t }}
+                </a>
+              </dt>
+              {% endif %}
+              <dd>
+                <ol>
+                  {% for t in tags %}
+                  {% assign tag = t | strip %}
+                  {% assign tag_value = tag | handleize %} 
+
+                  {% if current_tags contains tag %}
+                  <li class="{% if current_tags contains tag %}checked{% endif %}">
+                    <input type="checkbox" value="{{ tag_value }}" checked/>
+                    <label>{{ tag }}</label>
+                  </li>
+                  {% else %}
+                  {% if collection.tags contains tag %} 
+                  <li class="{% if current_tags contains tag %}checked{% endif %}">
+                    <input type="checkbox" value="{{ tag_value }}"/>
+                    <label>{{ tag }}</label>
+                  </li>
+                  {% endif %}
+                  {% endif %}
+                  {% endfor %}
+                </ol>
+              </dd>
+            </div>
+            {% endif %}
+            {% endcase %}
+            {% endfor %}
+          </div>
+        </dl>
+      </div>
+    </div>
+  </div>
+</div>
+{% endcomment %}
+<div class="clearfix clr clear"></div>
+{% schema %}
+  {
+    "name": "Filter Sidebar",
+    "max_blocks": 15,
+    "settings": [
+      {
+        "type": "header",
+        "content": "Sidebar Categories"
+      },
+	  {
+        "type": "checkbox",
+        "id": "enable_filter",
+        "label": "Enable filter ?",
+        "default": true
+      },
+	  {
+        "type": "checkbox",
+        "id": "enable_filter-fixed",
+        "label": "Only used filter fixed layout 1 coluomn",
+        "default": false
+      }
+
+    ],
+    "blocks": [
+		{
+			"type": "filter_color",
+            "name": "Filter Color",
+            "settings": [
+              	{
+                    "type": "checkbox",
+                    "id": "enable",
+                    "label": "Enable",
+                    "default": true
+                },
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Filter Title"
+                },
+                {
+                    "type": "text",
+                    "id": "color_text_1",
+                    "label": "Color text 1",
+                    "info": "i.e \"Red\"."
+                },
+                {
+                    "type": "image_picker",
+                    "id": "color_img_1",
+                    "label": "Color image 1"
+                },
+                {
+                    "type": "text",
+                    "id": "color_text_2",
+                    "label": "Color text 2",
+                    "info": "i.e \"Blue\"."
+                },
+                {
+                    "type": "image_picker",
+                    "id": "color_img_2",
+                    "label": "Color image 2"
+                },
+                {
+                    "type": "text",
+                    "id": "color_text_3",
+                    "label": "Color text 3",
+                    "info": "i.e \"Brown\"."
+                },
+                {
+                    "type": "image_picker",
+                    "id": "color_img_3",
+                    "label": "Color image 3"
+                },
+                {
+                    "type": "text",
+                    "id": "color_text_4",
+                    "label": "Color text 4",
+                    "info": "i.e \"Orange\"."
+                },
+                {
+                    "type": "image_picker",
+                    "id": "color_img_4",
+                    "label": "Color image 4"
+                },
+                {
+                    "type": "text",
+                    "id": "color_text_5",
+                    "label": "Color text 5",
+                    "info": "i.e \"Green\"."
+                },
+				{
+                    "type": "image_picker",
+                    "id": "color_img_5",
+                    "label": "Color image 5"
+                },
+                {
+                    "type": "text",
+                    "id": "color_text_6",
+                    "label": "Color text 6",
+                    "info": "i.e \"Black\"."
+                },
+                {
+                    "type": "image_picker",
+                    "id": "color_img_6",
+                    "label": "Color image 6"
+                },
+                {
+                    "type": "text",
+                    "id": "color_text_7",
+                    "label": "Color text 7",
+                    "info": "i.e \"Pink\"."
+                },
+                {
+                    "type": "image_picker",
+                    "id": "color_img_7",
+                    "label": "Color image 7"
+                },
+                {
+                    "type": "text",
+                    "id": "color_text_8",
+                    "label": "Color text 8",
+                    "info": "i.e \"Sliver\"."
+                },
+                {
+                    "type": "image_picker",
+                    "id": "color_img_8",
+                    "label": "Color image 8"
+                },
+                {
+                    "type": "text",
+                    "id": "color_text_9",
+                    "label": "Color text 9",
+                    "info": "i.e \"White\"."
+                },
+                {
+                    "type": "image_picker",
+                    "id": "color_img_9",
+                    "label": "Color image 9"
+                },
+                {
+                    "type": "text",
+                    "id": "color_text_10",
+                    "label": "Color text 10",
+                    "info": "i.e \"Yellow\"."
+                },
+                {
+                    "type": "image_picker",
+                    "id": "color_img_10",
+                    "label": "Color image 10"
+                },
+                {
+                    "type": "text",
+                    "id": "color_text_11",
+                    "label": "Color text 11",
+                    "info": "i.e \"Red\"."
+                },
+                {
+                    "type": "image_picker",
+                    "id": "color_img_11",
+                    "label": "Color image 11"
+                },
+                {
+                    "type": "text",
+                    "id": "color_text_12",
+                    "label": "Color text 12",
+                    "info": "i.e \"Red\"."
+                },
+                {
+                    "type": "image_picker",
+                    "id": "color_img_12",
+                    "label": "Color image 12"
+                },
+                {
+                    "type": "text",
+                    "id": "color_text_13",
+                    "label": "Color text 13",
+                    "info": "i.e \"Red\"."
+                },
+                {
+                    "type": "image_picker",
+                    "id": "color_img_13",
+                    "label": "Color image 13"
+                },
+                {
+                    "type": "text",
+                    "id": "color_text_14",
+                    "label": "Color text 14",
+                    "info": "i.e \"Red\"."
+                },
+                {
+                    "type": "image_picker",
+                    "id": "color_img_14",
+                    "label": "Color image 14"
+                },
+                {
+                    "type": "text",
+                    "id": "color_text_15",
+                    "label": "Color text 15",
+                    "info": "i.e \"Red\"."
+                },
+                {
+                    "type": "image_picker",
+                    "id": "color_img_15",
+                    "label": "Color image 15"
+                },
+                {
+                    "type": "text",
+                    "id": "color_text_16",
+                    "label": "Color text 16",
+                    "info": "i.e \"Red\"."
+                },
+                {
+                    "type": "image_picker",
+                    "id": "color_img_16",
+                    "label": "Color image 16"
+                },
+                {
+                    "type": "text",
+                    "id": "color_text_17",
+                    "label": "Color text 17",
+                    "info": "i.e \"Red\"."
+                },
+                {
+                    "type": "image_picker",
+                    "id": "color_img_17",
+                    "label": "Color image 17"
+                },
+                {
+                    "type": "text",
+                    "id": "color_text_18",
+                    "label": "Color text 18",
+                    "info": "i.e \"Red\"."
+                },
+                {
+                    "type": "image_picker",
+                    "id": "color_img_18",
+                    "label": "Color image 18"
+                },
+                {
+                    "type": "text",
+                    "id": "color_text_19",
+                    "label": "Color text 19",
+                    "info": "i.e \"Red\"."
+                },
+                {
+                    "type": "image_picker",
+                    "id": "color_img_19",
+                    "label": "Color image 19"
+                },
+                {
+                    "type": "text",
+                    "id": "color_text_20",
+                    "label": "Color text 20",
+                    "info": "i.e \"Red\"."
+                },
+                {
+                    "type": "image_picker",
+                    "id": "color_img_20",
+                    "label": "Color image 20"
+                }
+			]
+		},
+		{
+            "type": "filter_tag",
+            "name": "Filter Tags",
+            "settings": [
+                {
+                    "type": "checkbox",
+                    "id": "enable",
+                    "label": "Enable",
+                    "default": true
+                },
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Filter Title"
+                },
+                {
+                    "type": "textarea",
+                    "id": "list_tags",
+                    "label": "List Tags",
+                    "info": "Separate by a comma, i.e \"S, M, L\"."
+                }
+            ]
+		}
+    ]
+  }
+{% endschema %}
+{% javascript %}
+{% endjavascript %}

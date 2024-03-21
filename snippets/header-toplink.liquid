@@ -1,0 +1,23 @@
+<div class="account" id="my_account">
+  <a href="#" class="dropdown-toggle">
+    <span>{{ 'layout.customer.myaccount' | t }}</span><span class="fa fa-angle-down"></span>
+  </a>
+  <ul class="dropdown-menu dropdown-content">
+
+    {% if shop.customer_accounts_optional or shop.customer_accounts_enabled %}
+			{% capture fullname %}{{ customer.first_name }} {{ customer.last_name }}{% endcapture %}
+			{% assign login_html = 'layout.header.login_html' | t:fullname:fullname %}
+			{% assign logout = 'layout.header.logout' | t %}
+			{% assign login = 'layout.header.login' | t %}
+			{% assign register = 'layout.header.register' | t %}
+			{% if customer  %}
+				<li><a class="account" rel="nofollow" href="/account">{{ login_html }}</a></li>
+                <li>{{ logout | customer_logout_link }}</li>
+			{% else %}
+				<li>{{ login | customer_login_link }}</li>
+				<li>{{ register | customer_register_link }}</li>
+			{% endif %}
+		{% endif %}
+  </ul>
+</div>
+

@@ -1,0 +1,35 @@
+<ul class="ss_megamenu_dropdown dropdown_lv1">
+  {% for link1 in linklists[child_list_handle].links %}
+  {% assign child_list_handle = link1.title | handleize %}
+  {% if linklists[child_list_handle].links != blank %}
+  <li class="ss_megamenu_lv2 menu_item_drop{% if link1.active %} active{% endif %}">
+    <a href="{{ link1.url }}" class="{% if forloop.last %} ss_megamenu_head_last{% endif %}" title="">{{ link1.title }}</a>
+    <ul  class="ss_megamenu_dropdown dropdown_lv2">
+      {% for link2 in linklists[child_list_handle].links %}
+      {% assign child_list_handle = link2.title | handleize %}
+      {% if linklists[child_list_handle].links != blank %}
+      <li class="ss_megamenu_lv3 menu_item_drop{% if link2.active %} active{% endif %}">
+        <a href="{{ link2.url }}" title="">{{ link2.title | escape }}</a>
+        <ul class="ss_megamenu_dropdown dropdown_lv3">
+          {% for link3 in linklists[child_list_handle].links %}
+          <li class="ss_megamenu_lv3{% if link3.active %} active{% endif %}">
+            <a href="{{ link3.url }}" title="">{{ link3.title | escape }}</a>
+          </li>
+          {% endfor %}
+        </ul>
+      </li>
+      {% else %}
+      <li class="ss_megamenu_lv3{% if link2.active %} active{% endif %}">
+        <a href="{{ link2.url }}" title="">{{ link2.title | escape }}</a>
+      </li>
+      {% endif %}
+      {% endfor %}
+    </ul>
+  </li>
+  {% else %}
+  <li class="ss_megamenu_lv2 {% if link1.active %}active{% endif %}">
+    <a href="{{ link1.url }}" title="">{{ link1.title | escape }}</a>
+  </li>
+  {% endif %}
+  {% endfor %}
+</ul>

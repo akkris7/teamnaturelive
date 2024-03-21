@@ -1,0 +1,161 @@
+{% assign list_collection 	= section.settings.collection %}
+{%- assign collection = collections[section.settings.collection] -%}
+
+{% assign limit 			= section.settings.limit    %}
+
+{% assign image_size = section.settings.image_size %}
+
+<div class="widget-product-carousel clearfix {% if section.settings.show_dot %} show_dot{% endif %}">
+  <div class="container">
+    <div class="widget-content products-listing grid"> 
+      <div class="home-title">
+        {% if section.settings.title1 != blank %}
+        <h3>{{ section.settings.title1 }}</h3>
+        {% endif %}
+       
+        <div class="button-more">
+            <a class="bt" href="#">
+             {{ section.settings.text_button }}
+            
+            </a>
+          </div>
+      </div>
+      <div class="widget-product__item">
+          <div class="product-layout block-content">
+              
+                {% for product in collections[list_collection].products limit:limit %}
+                    
+                {% assign col2 = forloop.index %} 
+
+                {% if col2 == 1  %}
+                <div class="item">
+                  {% endif %}
+                  {% include 'product-card-grid-index' %}
+                  {% if col == 0 or forloop.last  %}
+                </div>
+                {% endif %}
+                {% else %}
+                {% for product in (1..limit) %}
+       
+                {% assign col2 = forloop.index %} 
+                {% if col2 == 1  %}
+                <div class="item">
+                  {% endif %}
+                  <div class="product-item product-item-container clearfix no-product">
+                    <a href="#" class="product-img">
+                      {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+                      {{ 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+                    </a>
+                    <div class="right-block">
+                     
+						<div class="caption">
+                      		<div class="product-name">Product's Demo {{ forloop.index }}</div>
+                        
+						 <div class="price">
+                            <span class="price-new"><span class="money" data-currency-usd="$111.00">$111.00</span></span>
+                            <span class="price-old"> <span class="money" data-currency-usd="$160.00">$160.00</span> </span>
+                          </div>
+                        </div>
+                       <div class="caption2">
+                          <div class="custom-reviews hidden-xs">          
+                            <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>          
+                          </div>
+                         <div class="button-link">
+							 <div class="btn-button add-to-cart action  ">    
+                              <form action="/cart/add" method="post" class="variants" data-id="AddToCartForm-2218661838910" enctype="multipart/form-data">   
+                                <input type="hidden" name="id" value="20081097441342">           
+                                <a class="btn-addToCart grl btn_df" href="javascript:void(0)" title="Add to cart"><i class="fa fa-shopping-cart"></i><span class="">Add to cart</span></a>
+                              </form>  
+                            </div>
+                             <div class="product-addto-links">
+        
+                                  <a class="btn_df btnProduct" href="/account/login" title="Wishlist">
+                                      <i class="fa fa-heart"></i>
+                                      <span class="hidden">Wishlist</span>
+                                  </a>
+
+                          </div>
+                            </div>
+                      </div>
+                    </div>
+                  </div>
+                  {% if col == 0 or forloop.last  %}
+                </div>
+                {% endif %}
+                {% endfor %}
+                {% endfor %}
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% schema %}
+{
+"name": "Home - Product Carousel",
+"class": "home-section",
+"settings": [
+		{
+            "type": "header",
+            "content": "Garenal Setting"
+		},
+		{
+            "type": "text",
+            "id": "title1",
+            "label": "Widget Name",
+            "default": "Product Carousel"
+		},
+		{
+        "type": "image_picker",
+        "id": "image1",
+        "label": "Banner image1"
+        },
+       
+        {
+            "type": "collection",
+            "id": "collection",
+            "label": "Collection"
+        },
+       
+		
+		{
+            "type": "text",
+            "id": "image_size",
+            "label": "Image product size",
+            "default": "270x",
+            "info": "[Size parameters](https://help.shopify.com/themes/liquid/filters/url-filters#size-parameters)"
+		},
+		
+       
+        {
+          "type": "text",
+          "id": "limit",
+          "label": "Limit Item",
+          "default": "4"
+        },
+        
+ 		
+		{
+          "type": "text",
+          "id": "text_button",
+          "label": "Button",
+          "default": "View all "
+        }
+		 
+        ],
+        "presets": [
+        	{
+              "name": "Home Products Slider",
+              "category": "Product"
+        	}
+        ]
+      }
+{% endschema %}
+
+{% stylesheet %}
+
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

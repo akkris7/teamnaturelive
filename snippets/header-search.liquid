@@ -1,0 +1,15 @@
+<div class="search-header-w">
+  <div class="btn btn-search-mobi hidden" >
+    <i class="fa fa-search"></i>
+  </div>
+  <div class="form_search">
+    <form class="formSearch" action="/search" method="get">
+      <input type="hidden" name="type" value="product">
+      <input class="form-control" type="search" name="q" value="{{ search.terms | escape }}" placeholder="{{ 'general.search.placeholder' | t }}" autocomplete="off" />
+      <button class="btn btn-search" type="submit" >
+        <span class="btnSearchText d-none">{{ 'general.search.search' | t }}</span>
+        <i class="fa fa-search"></i>
+      </button>
+    </form>
+  </div>
+</div>

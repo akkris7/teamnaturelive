@@ -1,0 +1,185 @@
+{% assign column1			= section.settings.column1  %}
+{% assign column2 			= section.settings.column2  %}
+{% assign column3 			= section.settings.column3  %}
+<div class="collection-info banners">
+  {% if section.settings.show_collection_image and collection.image %}
+  <div class="collection-image">
+    <img class="img-responsive" src="{{ collection.image.src | img_url: 'master' }}" alt="#">
+  </div>
+  {% endif %}
+
+  <div class="collection-info-full">
+    {% if section.settings.show_collection_title %}
+    <h1 class="collection-tille">{{ collection.title }}</h1>
+    {% endif %}
+    {% if section.settings.show_collection_des and collection.description != blank %}
+    <div class="rte des">
+      {{ collection.description }}
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+{% if section.settings.show_collection and section.settings.linklist_collections_name != blank %}
+<div class="category-carousel ss-carousel ss-owl">
+  <div class="owl-carousel" 
+       data-nav		="true"
+       data-margin		="30"
+       {% if settings.enable_rtl %}data-rtl="true"{% endif %}
+       data-column1	="{{ column1 }}" 
+       data-column2	="{{ column2 }}" 
+       data-column3	="{{ column3 }}" 
+       data-column4	="3" 
+       data-column5	="2">
+    {% for link in linklists[section.settings.linklist_collections_name].links %}
+
+    {% assign _collection = link.object %}
+
+    <div class="product-category">
+      <a href="{{ _collection.url }}"><img src="{{ _collection.image.src | img_url: '400x480', crop:'center' }}" alt="#"></a>
+      <div class="category-info">
+        <div class="category">
+          <h5 class="category-info__title">{{ _collection.title }}</h5>
+          <div class="category-info__count">{{ _collection.products.size }} items</div>
+        </div>
+      </div>
+    </div>
+
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+<hr>
+<div class="collection-main">
+  <div class="filters-toolbar-wrapper">
+    {% include 'collection-toolsbar' %}
+  </div>
+</div>
+<hr>
+{% schema %}
+  {
+    "name": "Collection info",
+    "settings": [
+	   {
+        "type": "checkbox",
+        "id": "show_collection_image",
+        "label": "Display Image Category?",
+        "default": true
+      },
+	   {
+        "type": "checkbox",
+        "id": "show_collection_title",
+        "label": "Display Image title?",
+        "default": true
+      },
+		{
+        "type": "checkbox",
+        "id": "show_collection_des",
+        "label": "Display Image description?",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "Sub Collections Settings"
+      },
+	  {
+        "type": "checkbox",
+        "id": "show_collection",
+        "label": "Display Sub Collections?",
+        "default": true
+      },
+      {
+        "type": "link_list",
+        "id": "linklist_collections_name",
+        "label": "Collections"
+      },
+	  {
+            "type": "select",
+            "id": "column1",
+            "label": "#Column 1",
+            "default": "4",
+			"info": "For Large desktops have screen > 1200px",
+            "options":[
+            	{
+            		"value": "2",
+                    "label": "2"
+            	},
+            	{
+            		"value": "3",
+                    "label": "3"
+            	},
+            	{
+            		"value": "4",
+                    "label": "4"
+            	},
+            	{
+            		"value": "5",
+                    "label": "5"
+            	},
+				{
+            		"value": "6",
+                    "label": "6"
+            	}
+            ]
+        },
+		{
+            "type": "select",
+            "id": "column2",
+            "label": "#Column 2",
+            "default": "3",
+			"info": "For Tablets have screen 991px to 1199px.",
+            "options":[
+            	{
+            		"value": "1",
+                    "label": "1"
+            	},
+            	{
+            		"value": "2",
+                    "label": "2"
+            	},
+            	{
+            		"value": "3",
+                    "label": "3"
+            	},
+            	{
+            		"value": "4",
+                    "label": "4"
+            	},
+            	{
+            		"value": "5",
+                    "label": "5"
+            	}
+            ]
+        },
+		{
+            "type": "select",
+            "id": "column3",
+            "label": "#Column 3",
+			"info": "For Tablets have screen 768px to 991px.",
+            "default": "2",
+            "options":[
+            	{
+            		"value": "1",
+                    "label": "1"
+            	},
+            	{
+            		"value": "2",
+                    "label": "2"
+            	},
+            	{
+            		"value": "3",
+                    "label": "3"
+            	},
+            	{
+            		"value": "4",
+                    "label": "4"
+            	},
+            	{
+            		"value": "5",
+                    "label": "5"
+            	}
+            ]
+        }
+	]
+  }
+{% endschema %}

@@ -1,0 +1,83 @@
+<div class="model-popup {% if typeproduct == '1col' %} layout_scroll{% endif %}">
+  <!--   Popup error -->
+  <div class="error-popup popup_cart modal-pu">
+    <div class="popup_content">
+      <div class="container a-center">
+        <div class="popup_inner">
+          <a class="popup_close close-pu" href="#" title="">{% include 'icon-close' %}</a>
+          <div class="modal-header ">
+            <p class="cart-success-messages"> {{ 'cart.general.error' | t }}</p>
+          </div>
+
+          <div class="modal-body cart-popup-action">
+            <p class="ajax-error-message"></p>
+
+            <button class="btn btn-dark close-pu"><span class="">{{ 'cart.general.return' | t }}</span></button>
+          </div>
+        </div>
+      </div>
+      <div class="popup_bg">&nbsp;</div>
+    </div>
+  </div>
+
+  <!--   Popup Cart -->
+  <div class="popup_cart bg_1 modal-pu pu-cart">
+    <div class="popup_content">
+      <div class="container a-center">
+        <div class="popup_inner">
+          <a class="popup_close close-pu" href="#" title="">{% include 'icon-close' %}</a>
+          <div class="modal-header ">
+            <p class="cart-success-messages"> {{ 'cart.general.cart_success' | t }}</p>
+          </div>
+          <div class="modal-body ">
+            <div class="row">
+              <div class="col-lg-9 col-md-6 col-sm-12 cart-popup-left">
+                <div class="product-image col-lg-6">
+                  <img alt="" src="{{ 'ajax-loader.gif' | asset_url }}" />
+                </div>
+
+                <div class="cart-popup-info col-lg-6">
+                  <h3 class="product-name"></h3>
+                  <p class="product-type"><span class="label-quantity"> {{ 'products.product.type' | t }}:</span>  <span class="product-type--value">1</span>	</p>
+                  <p class="cart-price-total price"><span class="price-total">1</span> x <span class="price-new"> $00.00</span>  </p>
+                </div>
+              </div>
+
+              <div class="col-lg-3 col-md-6 col-sm-12 cart-popup-right">
+
+                <div class="cart-popup-action">
+                  <button class="btn btn-danger" onclick="window.location='/checkout'">{{'cart.general.checkout' | t }}</button>
+
+                  <div class="cart-popup-imgbottom">
+
+                    {{ 'layout.cart.title_subtotal' | t }}
+
+                    <span class="previewCartCheckout-price">$00.00</span>				
+
+                    <p class="cart-popup-total" data-itemTotal="{{ 'layout.cart.items_total' | t }}"> </p>
+
+                  </div>
+                  <a href="#" class="btn btn-dark close-pu">{{'cart.general.continue_shopping' | t }}</a>
+                  <button class="btn btn-dark" onclick="window.location='/cart'">{{'cart.general.view_cart' | t }}</button>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="popup_bg">&nbsp;</div>
+    </div>
+  </div>
+  
+  <!--   Loading Icon -->
+  <div class="ss-loading" style="display: none;"></div>
+
+</div>
+{% if settings.pay_page != "" %}
+<a class="buy-demo d-none d-md-block" href="{{ pages[settings.pay_page].content }}">
+  <span>
+    <p><svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="40px" height="40px" viewBox="0 0 415.441 415.441" fill="#81b441" xml:space="preserve">       <path d="M324.63,22.533C135.173,226.428,80.309,371.638,80.309,371.638c41.149,47.743,111.28,43.72,111.28,43.72           c73.921,2.31,119.192-43.522,119.192-43.522c91.861-92.516,80.549-355.302,80.549-355.302          C372.769-23.891,324.63,22.533,324.63,22.533z"></path>       <path d="M32.369,181.983c0,0-28.983,57.964,18.859,155.495L178.367,58.01C176.916,58.538,63.691,98.037,32.369,181.983z"></path>  </svg></p><span> $ </span><strong>39</strong>
+  </span>
+  <div class="purchase-now-effect"></div>
+</a> {% endif %}

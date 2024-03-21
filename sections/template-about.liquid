@@ -1,0 +1,371 @@
+<div class="container page-about">
+  <div class="row">
+    <div class="col-md-12 welcome-about-us">
+      <div class="content-about-us row">
+        {% if section.settings.about_image != blank %}
+        <div class="image-about-us col-lg-6 col-md-12 col-12">
+          <img class="img-respon" alt="{{ section.settings.about_image.alt | default: shop.name }}" src="{{ section.settings.about_image | img_url: 'master' }}" />
+        </div>
+        {% else %}
+        <div class="image-about-us col-lg-6 col-md-12 col-12">
+          <img class="img-responsive" alt="{{ shop.name }}" src="//placehold.it/570x402" />
+        </div>
+        {% endif %}
+        <div class="content-about col-lg-6 col-md-12 col-12">
+
+          {% if section.settings.about_title != blank %}
+          <div class="title-about-us">
+            <h2>{{ section.settings.about_title }}</h2>
+          </div>
+          {% endif %}
+          {% if section.settings.about_text_desc != blank %}
+          <div class="des-about-us">
+            {{ section.settings.about_text_desc }}
+          </div>
+          {% endif %}
+          {% if section.settings.about_link != blank %}
+          <a href="{{ section.settings.about_link }}">
+            contact us
+          </a>
+          {% endif %}          
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="wpb_wrapper">
+  </div>  
+</div>
+{% if section.settings.show_service != blank %}
+<div class="about-service">
+  <div class="container">
+    <div class="wrap">
+      <div class="row">
+        <div class="item col-md-4 col-12">
+          <div class="item_wrap">
+            <div class="icon"><i class="fa fa-bar-chart"></i></div>
+            <h3>{{ section.settings.icon1 }}</h3>
+            <div class="des">{{ section.settings.des1 }}</div>
+          </div>
+        </div>
+        <div class="item col-md-4 col-12">
+          <div class="item_wrap">
+            <div class="icon"><i class="fa fa-paint-brush"></i></div>
+            <h3>{{ section.settings.icon2 }}</h3>
+            <div class="des">{{ section.settings.des2 }}</div>
+          </div>
+        </div>
+        <div class="item col-md-4 col-12">
+          <div class="item_wrap">
+            <div class="icon"><i class="fa fa-code"></i></div>
+            <h3>{{ section.settings.icon3 }}</h3>
+            <div class="des">{{ section.settings.des3 }} </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+{% if section.settings.show_team != blank %}
+<div class="our-member">
+  <div class="container">
+    <div class="wrap">
+      {% if section.settings.member_title != blank %}
+      <div class="title-about-us">
+        <h2>{{ section.settings.member_title }}</h2>
+      </div>
+      {% endif %}
+
+      {% if section.settings.our_text_desc != blank %}
+      <div class="dshort-des">
+        {{ section.settings.our_text_desc }}
+      </div>
+      {% endif %}
+      <div class="row">
+        {% for block in section.blocks %}
+        {% case block.type %}
+        {% when 'faq' %}   
+        <div class="col-xl-3 col-lg-3 col-6">
+          <div class="item-inner">
+            <div class="w-image-box">
+              {% if block.settings.our_image_1 != blank %}
+              <div class="item-image">
+                <a title="Jennifer lawrence" href="#">
+                  <img class="img-respon" alt="{{ block.settings.our_image_1.alt | default: shop.name }}" src="{{ block.settings.our_image_1 | img_url: 'master' }}" />
+                </a>
+              </div>
+              {% else %}
+              <img class="img-responsive" alt="{{ shop.name }}" src="//placehold.it/160x160" />
+              {% endif %}
+            </div>
+            <div class="info-member">
+              <div class="item-content">
+              {% if block.settings.cl_name_1 != blank %}
+              <h2 class="cl-name"><a title="Jennifer lawrence" href="#">{{ block.settings.cl_name_1 }}</a></h2>
+              {% endif %}
+              {% if block.settings.cl_job_1 != blank %}
+              <p class="cl-job">{{ section.settings.cl_job_1 }}Tech Leader</p>
+              {% endif %}
+              </div>
+              <div class="socials-wraps "> 
+                <ul>
+
+                  {% if block.settings.social_facebook_link %}
+                  <li class="facebook"><a class="_blank" href="{{ block.settings.social_facebook_link }}" target="_blank"><i class="fa fa-facebook"></i></a></li>
+                  {% endif %}
+                  {% if block.settings.social_twitter_link %}
+                  <li class="twitter"><a class="_blank" href="{{ block.settings.social_twitter_link }}" target="_blank"><i class="fa fa-twitter"></i></a></li>
+                  {% endif %}
+                  
+                  
+                  {% if block.settings.social_dribbble_link %}
+                  <li class="dribbble"><a class="_blank" href="{{ block.settings.social_dribbble_link }}" target="_blank"><i class="fa  fa-dribbble"></i></a></li>
+                  {% endif %}            
+                  {% if block.settings.social_instagram_link %}
+                  <li class="instagram"><a class="_blank" href="{{ block.settings.social_instagram_link }}" target="_blank"><i class="fa  fa-instagram"></i></a></li>
+                  {% endif %}
+                  {% if block.settings.social_pinterest_link %}
+                  <li class="pinterest"><a class="_blank" href="{{ block.settings.social_pinterest_link }}" target="_blank"><i class="fa fa-pinterest"></i></a></li>
+                  {% endif %}
+                  {% if block.settings.social_linkedin_link %}
+                  <li class="linkedin"><a class="_blank" href="{{ block.settings.social_linkedin_link }}" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+                  {% endif %}            
+                </ul>
+              </div>  
+            </div>
+          </div>
+        </div>
+        {% endcase %}
+        {% endfor %}        
+      </div>
+    </div>	
+  </div>
+</div>
+{% endif %}
+
+<style>
+  .main-content{
+  	padding-bottom: 0 !important; 
+  }
+</style> 
+{% schema %}
+{
+  "name": "About Us Page",
+  "settings": [
+    {
+      "type": "header",
+      "content": "About Us Info"
+    },
+    {
+      "type": "text",
+      "id": "about_title",
+      "label": "Title About",
+      "default": "Welcome To Shop"
+    },
+    {
+      "type": "image_picker",
+      "id": "about_image",
+      "label": "About Image"
+    },
+    {
+      "type": "textarea",
+      "id": "about_text_desc",
+      "label": "About Text Description"
+    },
+    {
+      "type": "text",
+      "id": "about_link",
+      "label": "Link button",
+      "default":"#"
+    },{
+      "type": "header",
+      "content": "About service"
+    },
+    {
+      "type":"checkbox",
+      "id":"show_service",
+      "default":true,
+      "label":"Show ?"
+
+    },
+    {
+      "type": "text",
+      "id": "icon1",
+      "label": "Title 1",
+      "default": "Strategy & Marketing"
+    },
+    {
+      "type": "text",
+      "id": "des1",
+      "label": "Description 1",
+      "default": "Description 1"
+    },
+    {
+      "type": "text",
+      "id": "icon2",
+      "label": "Title 2",
+      "default": "interaction design "
+    },
+    {
+      "type": "text",
+      "id": "des2",
+      "label": "Description 2",
+      "default": "Description 2"
+    },
+    {
+      "type": "text",
+      "id": "icon3",
+      "label": "Title 3",
+      "default": "WEb Development"
+    },
+    {
+      "type": "text",
+      "id": "des3",
+      "label": "Description 3",
+      "default": "Description 3"
+    },{
+      "type": "header",
+      "content": "Out Member"
+    },
+    {
+      "type":"checkbox",
+      "id":"show_team",
+      "default":true,
+      "label":"Show ?"
+
+    },
+    {
+      "type": "text",
+      "id": "member_title",
+      "label": "Title Our Member",
+      "default": "Our Member"
+    },
+    {
+      "type": "textarea",
+      "id": "our_text_desc",
+      "label": "Our Text Description",
+      "default":"Lorem Khaled Ipsum is a major key to success. Eliptical talk. The key to more success is to get a massage once a week"
+
+    },{
+      "type": "header",
+      "content": "About policy"
+    },
+    {
+      "type":"checkbox",
+      "id":"show_policy",
+      "default":true,
+      "label":"Show ?"
+
+    },
+    {
+      "type": "text",
+      "id": "title1",
+      "label": "Title 1",
+      "default": "Free shipping"
+    },
+    {
+      "type": "text",
+      "id": "description1",
+      "label": "Description 1",
+      "default": "Free shipping on oder over $100"
+    },
+    {
+      "type": "text",
+      "id": "title2",
+      "label": "Title 2",
+      "default": "secure payment"
+    },
+    {
+      "type": "text",
+      "id": "description2",
+      "label": "Description 2",
+      "default": "We value your security"
+    },
+    {
+      "type": "text",
+      "id": "title3",
+      "label": "Title 3",
+      "default": "Online support"
+    },
+    {
+      "type": "text",
+      "id": "description3",
+      "label": "Description 3",
+      "default": "We have support 24/7"
+    },
+    {
+      "type": "text",
+      "id": "title4",
+      "label": "Title 4",
+      "default": "payment on delivery"
+    },
+    {
+      "type": "text",
+      "id": "description4",
+      "label": "Description 4",
+      "default": "Cash on delivery option"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq",
+      "name": "FAQ",
+      "settings": [
+
+        {
+          "type": "image_picker",
+          "id": "our_image_1",
+          "label": "Our Image 1"
+        },
+        {
+          "type": "text",
+          "id": "cl_name_1",
+          "label": "CL Name",
+          "default": "Jennifer lawrence"
+        },
+        {
+          "type": "text",
+          "id": "cl_job_1",
+          "label": "CL Job",
+          "default": "Tech Leader"
+        },
+        {
+          "type": "text",
+          "id": "cl_des_1",
+          "label": "CL Description"
+        },
+        {
+          "type": "text",
+          "id": "social_facebook_link",
+          "label": "Facebook",
+          "default": "#"
+        },
+        {
+          "type": "text",
+          "id": "social_twitter_link",
+          "label": "twitter",
+          "default": "#"
+        },
+        {
+          "type": "text",
+          "id": "social_google_link",
+          "label": "google",
+          "default": "#"
+        },
+        {
+          "type": "text",
+          "id": "social_dribbble_link",
+          "label": "dribbble",
+          "default": "#"
+        },
+        {
+          "type": "text",
+          "id": "social_linkedin_link",
+          "label": "linkedIn",
+          "default": "#"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

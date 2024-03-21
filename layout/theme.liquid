@@ -1,0 +1,136 @@
+<!doctype html>
+<!--[if IE 9]> <html class="ie9 no-js" lang="{{ shop.locale }}"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> 
+<html class="no-js" {% if settings.enable_rtl %}dir="rtl" {% endif %}lang="{{ shop.locale }}"> <!--<![endif]-->
+  <head>
+    <!-- Basic page -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,user-scalable=1">
+    <meta name="theme-color" content="{{ settings.color_button }}">
+    <link rel="canonical" href="{{ canonical_url }}">
+
+    <!-- Favicon -->
+    {% if settings.favicon != blank %}
+    <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32' }}" type="image/png">
+    {% else %}
+    <link rel="shortcut icon" href="{{ 'favicon.png' | asset_url }}" type="image/x-icon" />
+    {% endif %}
+
+    <!-- Title and description -->
+    <title>
+      {{ page_title }}{% if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif %}{% if current_page != 1 %} &ndash; Page {{ current_page }}{% endif %}{% unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}
+    </title>
+
+    {% if page_description %}
+    <meta name="description" content="{{ page_description | escape }}">
+    {% endif %}
+    
+    <!-- Script -->
+    
+    
+    {% include 'head-script' %}
+    {% include 'theme-config' %}
+    {% include 'head-styles' %}
+    {% include 'head_fonts' %}
+    {% include 'svg_fonts' %}
+    {% include 'social-meta-tags' %}
+    {% if template contains 'product' %}
+    <script>
+      Shopify.Products.showRecentlyViewed( { howManyToShow:4 } );  
+      Shopify.Products.recordRecentlyViewed();
+      
+    </script>
+    {% endif %}
+    {{ content_for_header }}
+  </head>
+  
+    
+  
+  <body class="template-{{ template | split: '.' | first }}">
+    
+    {% section 'announcement-bar' %}
+  
+
+    
+    
+    <div id="wrapper" class="page-wrapper {{ settings.wrapper_page_type }} {{ settings.effect }}">
+      <!--   Loading Site -->
+      {% if settings.loading_enable %}
+      <div id="loadingSite">
+         
+        {% if settings.img_loading != blank %}
+        <div class="loader"></div>
+        
+        {% endif %}
+        
+        {% if settings.img_loading == blank %}
+       
+        	{% include 'ss-loader' %}
+        {% endif %}
+        
+      </div>
+      {% endif %}
+      
+ 
+      
+      {% include 'header-style1' %}
+      <div class="quick-view"></div>
+      
+      <div class="page-container" id="PageContainer">
+        
+       
+        
+        <div class="main-content" id="MainContent">
+          
+             
+          {{ content_for_layout }}
+          
+       
+          
+        </div>
+        
+        
+        
+        {% section 'footer' %}
+
+    <script src="//cdn.codeblackbelt.com/js/modules/shipping-rates-calculator-plus/main.min.js?shop=teamnature-in.myshopify.com" defer></script>
+
+     
+        {% if template contains 'index' and settings.ssnp_status %}
+   
+        {% endif %}
+        
+      </div>
+      
+      
+      
+		{% include 'modal' %}
+      
+    {% include 'ss-quickview' %} 
+      
+       
+      
+      {% include 'footer-script' %}
+      {% include 'ss-autosearch' %}
+   
+      
+    </div>
+{% comment %}
+{% include 'swymSnippet' %}
+{% endcomment %} 
+
+   
+  <script>
+$('.image').on('mouseover', function() {
+	let $this = $(this),
+	    $mainImage = $this.siblings('.grid-view-item__image');
+
+	$mainImage.attr('src', $this.attr('src'));
+  
+});
+</script>  
+
+    
+    
+</body>
+</html>

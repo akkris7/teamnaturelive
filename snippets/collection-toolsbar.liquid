@@ -1,0 +1,78 @@
+<div class="filters-toolbar">
+  <div class="row">
+    <div class="col col-6 col-sm-6 col-lg-6">
+      <div class="view-mode sn">
+      
+         {% if settings.enable_collection_sidebar %}{% else %}<a href="javascript:void(0)" class="open-fiter"><i class="fa fa-filter"></i>{{ 'collections.general.filter' | t }}</a>{% endif %}
+        
+        <button id="{{settings.mode_view_default}}" type="button" title="{{ 'collections.general.grid_view' | t }}" class="hidden-xs changeViewMode active" >
+        <i class="material-icons">&#xE5C3;</i></button>
+        
+        <button id="list-view" type="button" title="{{ 'collections.general.list_view' | t }}" class="hidden-xs changeViewMode " >
+        <i class="material-icons">&#xE242;</i></button>
+        
+      </div>
+    </div>
+    <div class="col col-6 col-sm-6 col-lg-6">
+      <div class="filters-toolbar-item filter-fiel">
+        {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+        <label for="SortBy" class="label-sortby hidden-xs">{{ 'collections.sorting.title-label' | t }}</label>
+        
+      <!--      Code added by Shajesh : to make sort work --> 
+        
+        <select name="SortBy" id="SortBy" class="filters-toolbar__input filters-toolbar__input--sort filters-toolbar-sort" onchange="javascript:location.href = window.location.href.split('?')[0] + `?sort_by=${this.value}`;">
+      {% for option in collection.sort_options %}
+        <option value="{{ option.value }}" {% if option.value == collection.sort_by %}selected{% endif %}>{{ option.name }}</option>
+      {% endfor %}
+    </select>
+        
+       
+        
+        
+  <!--      Code removed by Shajesh : Sort was not working 
+        
+        <select name="SortBy" id="SortBy" class="filters-toolbar__input filters-toolbar__input--sort filters-toolbar-sort">
+
+          {% if collection.default_sort_by != 'manual' %}
+          <option value="manual"{% if sort_by == "manual" %} selected="selected"{% endif %}>{{ 'collections.sorting.featured' | t }}</option>
+
+          {% if collection.default_sort_by != 'best-selling' %}
+          <option value="best-selling"{% if sort_by == "best-selling" %} selected="selected"{% endif %}>{{ 'collections.sorting.best_selling' | t }}</option>
+          {% endif %}
+          {% if collection.default_sort_by != 'title-ascending' %}
+          <option value="title-ascending"{% if sort_by == "title-ascending"  %}selected="selected"{% endif %}>{{ 'collections.sorting.az' | t }}</option>
+          {% endif %}
+          {% if collection.default_sort_by != 'title-descending' %}
+          <option value="title-descending"{% if sort_by == "title-descending" %} selected="selected"{% endif %}>{{ 'collections.sorting.za' | t }}</option>
+          {% endif %}
+          {% if collection.default_sort_by != 'price-ascending' %}
+          <option value="price-ascending"{% if sort_by == "price-ascending" %} selected="selected"{% endif %}>{{ 'collections.sorting.price_ascending' | t }}</option>
+          {% endif %}
+          {% if collection.default_sort_by != 'price-descending' %}
+          <option value="price-descending"{% if sort_by == "price-descending" %} selected="selected"{% endif %}>{{ 'collections.sorting.price_descending' | t }}</option>
+          {% endif %}
+          {% if collection.default_sort_by != 'created-descending' %}
+          <option value="created-descending"{% if sort_by == "created-descending" %} selected="selected"{% endif %}>{{ 'collections.sorting.date_descending' | t }}</option>
+          {% endif %}
+          {% if collection.default_sort_by != 'created-ascending' %}
+          <option value="created-ascending"{% if sort_by == "created-ascending" %} selected="selected"{% endif %}>{{ 'collections.sorting.date_ascending' | t }}</option>
+          {% endif %}
+          {% else %}
+          <option value="manual"{% if sort_by == "manual" %} selected="selected"{% endif %}>{{ 'collections.sorting.featured' | t }}</option>
+          <option value="best-selling"{% if sort_by == "best-selling" %} selected="selected"{% endif %}>{{ 'collections.sorting.best_selling' | t }}</option>
+          <option value="title-ascending"{% if sort_by == "title-ascending"  %}selected="selected"{% endif %}>{{ 'collections.sorting.az' | t }}</option>
+          <option value="title-descending"{% if sort_by == "title-descending" %} selected="selected"{% endif %}>{{ 'collections.sorting.za' | t }}</option>
+          <option value="price-ascending"{% if sort_by == "price-ascending" %} selected="selected"{% endif %}>{{ 'collections.sorting.price_ascending' | t }}</option>
+          <option value="price-descending"{% if sort_by == "price-descending" %} selected="selected"{% endif %}>{{ 'collections.sorting.price_descending' | t }}</option>
+          <option value="created-descending"{% if sort_by == "created-descending" %} selected="selected"{% endif %}>{{ 'collections.sorting.date_descending' | t }}</option>
+          <option value="created-ascending"{% if sort_by == "created-ascending" %} selected="selected"{% endif %}>{{ 'collections.sorting.date_ascending' | t }}</option>
+          {% endif %}
+        </select>
+        
+        -->
+        
+        <input class="collection-header__default-sort" type="hidden" value="{{ collection.default_sort_by }}">
+      </div>
+    </div>
+  </div>
+</div>

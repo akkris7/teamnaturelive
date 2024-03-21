@@ -1,0 +1,36 @@
+{% if collection.image %}
+{%- assign collection_image = collection.image -%}
+{% elsif collection.products.first and collection.products.first.images != empty %}
+{%- assign collection_image = collection.products.first.featured_image -%}
+{% else %}
+{% assign collection_image = blank %}
+{% endif %}
+
+<div class="collection-grid-item">
+
+  <a href="{% if collection.products == empty %}#{% else %}{{ collection.url }}{% endif %}" class="collection-grid-item__link">
+    {% unless collection_image == blank %}  
+    <div class="collection-grid-item__overlay"         
+         data-bgset="{% include image: collection_image %}"
+         data-sizes="auto"
+         data-parent-fit="cover"
+         style="background-image: url('{{ collection_image | img_url: image_size }}')">
+
+    </div>
+    {% else %}
+    <div class="collection-grid-item__overlay" style="background-image: url('{{ collection_image | img_url: image_size }}')"></div>
+    {% endunless %}
+    <div class="collection-grid-item__title-wrapper">
+      <div class="collection-grid-item__title">
+        {% if collection.title == blank %}
+        {{ 'homepage.onboarding.collection_title' | t }}
+        {% else %}
+        {{ collection.title }}
+        {% endif %}
+        <p class="count-products font-ct">( {{ 'collections.general.items_with_count' | t: count: collection.all_products_count }} )</p>
+        <p class="font-ct"><a href="{{ collection.url }}" class="btn collection">{{ 'collections.sorting.show_now' | t }}</a></p>
+      </div>
+
+    </div>
+  </a>
+</div>

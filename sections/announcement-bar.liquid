@@ -1,0 +1,185 @@
+{% if section.settings.message %}
+  {% if section.settings.home_page_only == false or template.name == 'index' %}
+  <style>
+    .announcement-bar {
+      background-color: {{ section.settings.color_bg }};
+      text-align:center;
+      {% if section.settings.header_padding > 0 %}
+        position:absolute;
+        top: -{{ section.settings.header_padding }}px !important;
+        left:0;
+        width:100%;
+        z-index:9;
+      {% endif %}
+    }
+    .announcement-bar p {
+      padding:10px 0;
+      font-size: {{ section.settings.font_size }}px;
+      margin:0 !important;
+    }
+    .announcement-bar__message,
+    .announcement-bar--link {
+      color: {{ section.settings.color_text }};
+    }
+    .announcement-bar--link:hover, 
+    .announcement-bar--link:hover .announcement-bar__message {
+      color: {{ section.settings.color_text_hover }} !important;
+    }
+    body {
+      position:relative;
+      top: {{ section.settings.header_padding }}px !important;
+    }
+  </style>
+
+  {% if section.settings.message_link == blank %}
+  <div class="announcement-bar">
+    {% else %}
+    <a href="{{ section.settings.message_link }}" class="announcement-bar announcement-bar--link">
+      {% endif %}
+
+      {% capture shipping_value %}{{ section.settings.free_shipping_threshold | times: 100 }}{% endcapture %}
+      {% assign cart_total = cart.total_price %}
+      {% assign shipping_value_left = shipping_value | minus: cart_total %}
+      {% assign shipping_value_left_money = shipping_value_left | money %}
+      {% capture free_shipping_notqualified %}
+        {{ section.settings.free_shipping_notqualified | replace: '[price]', shipping_value_left_money }}
+      {% endcapture %}
+      {% assign free_shipping_qualified = section.settings.free_shipping_qualified %}
+      {% assign announcement_message = section.settings.message_text %}
+      
+      {% if section.settings.free_shipping_countdown %}
+        {% if cart.total_price > 0 %}
+          {% assign announcement_message = free_shipping_notqualified %}
+        {% endif %}
+        {% if shipping_value_left <= 0 %}
+          {% assign announcement_message = free_shipping_qualified %}
+        {% endif %}
+      {% endif %}
+      
+      <p class="announcement-bar__message">{{ announcement_message }}</p>
+
+      {% if section.settings.message_link == blank %}
+      </div>
+    {% else %}
+    </a>
+  {% endif %}
+
+  {% endif %}
+{% endif %}
+
+<style>
+  
+</style>
+
+{% schema %}
+  {
+    "name": "Announcement bar",
+    "settings": [
+      {
+        "type": "header",
+        "content": "General"
+      },
+      {
+        "type": "checkbox",
+        "id": "message",
+        "label": "Show announcement",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "home_page_only",
+        "label": "Home page only",
+        "default": false
+      },
+    {
+        "type":   "range",
+        "id":     "header_padding",
+        "min":    0,
+        "max":    100,
+        "step":   1,
+        "unit":   "px",
+        "label":  "Header padding",
+        "default":   0,
+    "info":   "Pushes page content down below announcement bar (only needed on some themes)"
+      },
+    {
+        "type": "header",
+        "content": "Content"
+      },
+      {
+        "type": "text",
+        "id": "message_text",
+        "label": "Text",
+        "default": "Announce something here"
+      },
+    {
+        "type": "checkbox",
+        "id": "free_shipping_countdown",
+        "label": "Show free shipping countdown",
+    "info": "Tells the customer how much they need to add to their cart to receive free shipping (only appears when at least one item is in the cart).",
+        "default": false
+      },
+    {
+        "type":   "range",
+        "id":     "free_shipping_threshold",
+        "min":    5,
+        "max":    100,
+        "step":   1,
+        "unit":   "$",
+        "label":  "Free shipping threshold",
+        "default":   25,
+    "info":   "The amount at which customers receive free shipping (must match your shipping settings)."
+      },
+    {
+        "type": "textarea",
+        "id": "free_shipping_notqualified",
+        "label": "Free shipping (not qualified) message",
+        "default": "Add just [price] to your cart to receive free shipping!"
+      },
+    {
+        "type": "textarea",
+        "id": "free_shipping_qualified",
+        "label": "Free shipping (qualified) message",
+        "default": "Your order qualifies for free shipping!"
+      },
+      {
+        "type": "url",
+        "id": "message_link",
+        "label": "Link",
+        "info": "Optional"
+      },
+    {
+        "type": "header",
+        "content": "Fonts and colors"
+      },
+      {
+        "type": "color",
+        "id": "color_bg",
+        "label": "Background color",
+        "default": "#333333"
+      },
+      {
+        "type": "color",
+        "id": "color_text",
+        "label": "Text color",
+        "default": "#ffffff"
+      },
+    {
+        "type": "color",
+        "id": "color_text_hover",
+        "label": "Link hover color",
+        "default": "#eeeeee"
+      },
+    {
+        "type":   "range",
+        "id":     "font_size",
+        "min":    8,
+        "max":    36,
+        "step":   1,
+        "unit":   "px",
+        "label":  "Font size",
+        "default":   14
+      }
+    ]
+  }
+{% endschema %}

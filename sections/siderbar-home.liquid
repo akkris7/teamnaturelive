@@ -1,0 +1,207 @@
+{% for block in section.blocks %}
+{% case block.type %}
+{% when 'banner' %}
+{% if block.settings.enable_img %}
+<div class="block-sidebar banner-sidebar banners d-none d-lg-block">
+  <div>
+    {% if block.settings.link != blank %}
+    <a href="{{ block.settings.link }}" title="{{ block.settings.image.alt | default: shop.name }}">{% endif %}
+      {% if block.settings.image != blank %}
+      <img class="img-responsive" alt="{{ block.settings.image.alt | default: shop.name }}" src="{{ block.settings.image | img_url:'master' }}" />
+      {% else %}
+      <img class="img-responsive" alt="{{ shop.name }}" src="//placehold.it/270x347" />
+      {% endif %}
+      {% if block.settings.link != blank %}
+    </a>
+    {% endif %}     
+  </div>
+</div>
+{% endif %}
+{% when 'Menu' %}
+<div class="block-sidebar tags">
+  {% if block.settings.title_menu != blank %}
+  <div class="home-title">    
+    <span>{{ block.settings.title_menu }}</span>
+  </div>
+  {% endif %}
+  <ul class="footer-block-content links">
+    {% for link in linklists[block.settings.link].links %}
+    <li>
+      <a href="{{ link.url }}">{{ link.title }}</a>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+{% when 'product' %}
+<div class="block-sidebar">
+  {% if block.settings.bs_title != blank %}
+  <div class="home-title">       
+    <span> {{ block.settings.bs_title }}</span>
+  </div>
+  {% endif %}
+  <div class="wrap">        
+    <div class="slick-slider">
+      {% for product in collections[block.settings.collection].products limit:block.settings.bs_limit %}
+      <div class="item-inner product-thumb transition">
+        {% include 'product-item' %}
+      </div>
+      {% else %}
+      {% for product in (1..4) limit:block.settings.bs_limit %}
+      <div class="item-inner product-thumb transition"> 
+        <div class="product-item">
+          <a href="#" class="product-img">
+            <div class="grid-view-item__image">
+              {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+              {{ 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+            </div>
+          </a>
+          <div class="product-info">
+            <div class="product-title"><strong>Product's Demo {{ forloop.index }}</strong></div>
+            <div class="price">
+              <span class="price-new"><span class="money">$111.00</span></span>
+              <span class="price-old"> <span class="money">$160.00</span> </span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      {% endfor %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endcase %}
+{% endfor %}
+{% if section.settings.show_sidebar == "right" %}
+<style>
+  .template-index .home-sidebar{
+    float:right;
+  }
+  .template-index .main-right{
+    float:left;
+  }
+</style>
+{% endif %}
+{% unless section.settings.enable_sidebar_detail %}
+<style>
+.template-index .home-sidebar{
+    display: none; 
+  }
+  .template-index .main-right{
+    max-width: 100%; 
+  }
+</style>
+{% endunless %}
+{% schema %}
+{
+  "name": "Home Sidebar",
+  "class": "wrap",
+  "max_blocks": 10,
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_sidebar_detail",
+      "label": "Enable Sidebar ?",
+      "default": true
+    },
+    { 
+      "type": "radio",
+      "id": "show_sidebar",
+      "label": "Show Sidebar Layout: ",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "banner",
+      "name": "Sidebar Banner",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "enable_img",
+          "label": "Enable Banner Sidebar?",
+          "default": true
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "link",
+          "label": "Banner Image Link"
+        }
+      ]
+    },
+	{
+      "type": "product",
+      "name": "Sidebar Products",
+      "settings": [
+        {
+          "type": "text",
+          "id": "bs_title",
+          "label": "Title",
+          "default": "Best Sellers"
+        },
+        {
+          "id": "collection",
+          "type": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "text",
+          "id": "bs_limit",
+          "label": "Number of products to show",
+          "default": "4"
+        }
+      ]
+    },
+    {
+      "type": "Menu",
+      "name": "Menu",
+      "settings": [
+        { 
+           "type": "text",
+           "id": "title_menu",
+           "label": "Title",
+			"default":"Tag search"
+        },
+		{ 
+           "type": "link_list",
+           "id": "link",
+           "label": "Select menu"
+        }
+      ]
+    }
+    
+  ]
+}
+{% endschema %}
+<style>
+{% if section.settings.enable_sidebar_detail %}
+  @media (min-width: 768px) {
+  	.template-product .sidebar-product { display: block!important; }
+  }
+  @media (max-width: 767px) {
+    .template-collection .sidebar-product { display: none; }	
+  }
+{% else %}
+  .template-product .sidebar-product { display: none!important; }
+  .template-product .main-product { width: 100%!important; }
+
+{% endif %}
+  {% if section.settings.show_sidebar == 'right' %}
+    .sidebar-product { float: right; }
+  {% endif %}
+</style>

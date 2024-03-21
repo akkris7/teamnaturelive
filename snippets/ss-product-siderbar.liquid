@@ -1,0 +1,18 @@
+{% unless ss_title %}
+{% assign ss_title = 'Best Sellers' %}
+{% endunless %}
+{% unless ss_limit %}
+{% assign ss_limit = 4 %}
+{% endunless %}
+{% unless ss_collection %}
+{% assign ss_collection = collection %}
+{% endunless %}
+<div class="block widget-prd-featured spaceBlock">
+  <h3 class="block-title">{{ss_title}}</h3>
+  <div class="block-content products-list">  
+    {% for product in collections[ss_collection].products limit: ss_limit %}  
+      {% include 'product-item' %}  
+    {% endfor %}
+  </div>
+</div>
+ 

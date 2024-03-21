@@ -1,0 +1,31 @@
+
+{% assign theme-load = 'popup' %}{% comment %}popup | icon{% endcomment %} 
+{% assign addcart-susscess = 'popup' %}{% comment %}popup | text | noitice{% endcomment %} 
+{% assign miniCart-title = false %}
+{% assign miniCart-totalPrice = false %}
+
+
+<script>
+  window.file_url = "{{''|file_url}}"; 
+  window.theme_load = "{{ 'ajax-loader.gif' | asset_url}}"; 
+
+  window.filter_mul_choice = true;
+
+  //Product Detail - Add to cart
+  window.btn_addToCart = '#btnAddtocart';
+  window.product_detail_form = '#AddToCartForm';
+  window.product_detail_name = '.product-info h1';
+  window.product_detail_mainImg = '.product-single-photos img';
+  window.addcart_susscess = "{{ addcart-susscess}}";
+
+  window.cart_count = ".mini-cart .cart-count";
+  window.cart_total = ".mini-cart .cart-total";
+  window.trans_text = {
+    in_stock: "{{ 'products.product.in_stock' | t }}",
+    many_in_stock: "{{ 'products.product.many_in_stock' | t }}",
+    out_of_stock: "{{ 'products.product.out_of_stock' | t }}",
+    add_to_cart: "{{ 'products.product.add_to_cart' | t }}",
+    sold_out: "{{ 'products.product.sold_out' | t }}",
+    unavailable: "{{ 'products.product.unavailable' | t }}"
+  };	
+</script>

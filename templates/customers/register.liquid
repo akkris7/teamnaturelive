@@ -1,0 +1,37 @@
+{% include 'breadcrumb' %}
+<div class="container">
+  <div class="wraper-inner">
+    <div class="row">
+
+      <div class="col-12 col-md-6">
+        <div class="formaccount formlogin">
+          {% form 'create_customer' %}
+
+          <h1 class="page-title">{{ 'customer.register.title' | t }}</h1>
+
+          {{ form.errors | default_errors }}
+          <div class="form-group">
+            <label for="FirstName">{{ 'customer.register.first_name' | t }}</label>
+            <input class="form-control" type="text" name="customer[first_name]"  {% if form.first_name %}value="{{ form.first_name }}"{% endif %} autofocus>
+          </div>
+          <div class="form-group">
+            <label for="LastName">{{ 'customer.register.last_name' | t }}</label>
+            <input class="form-control" type="text" name="customer[last_name]" {% if form.last_name %}value="{{ form.last_name }}"{% endif %}>
+          </div>
+          <div class="form-group">
+            <label for="Email">{{ 'customer.register.email' | t }}</label>
+            <input class="form-control" type="email" name="customer[email]"  class="{% if form.errors contains 'email' %} input--error{% endif %}" {% if form.email %} value="{{ form.email }}"{% endif %} autocorrect="off" autocapitalize="off">
+          </div>
+          <div class="form-group">
+            <label for="CreatePassword">{{ 'customer.register.password' | t }}</label>
+            <input class="form-control" type="password" name="customer[password]"  class="{% if form.errors contains 'password' %} input--error{% endif %}">
+          </div>
+          <p class="text-center cr_acc">
+            <input type="submit" value="{{ 'customer.register.submit' | t }}" class="btn btn-default">
+          </p>
+          {% endform %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

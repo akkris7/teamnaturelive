@@ -1,0 +1,95 @@
+{% assign limit_product = section.settings.limit_product %}
+<div class="page-hotdeal">
+  <div class="container">
+    <div class="deal-image">
+      {% if section.settings.display_image_cat %}
+      <p>
+        {% if section.settings.img_cat != blank %}
+        <img src="{{ section.settings.img_cat | img_url :"1650x350", crop:'center'}}" alt="{{ collection.title | split: '|' | first }}" />
+        {% else %}
+        <img class="img-responsive" alt="{{ shop.name }}" src="//placehold.it/1650x350" />
+        {% endif %}
+      </p>
+      {% endif %}
+    </div>
+    <div class="ltabs-tabs-container">
+           <h2 class="page-title">{{ page.title }}</h2>
+      <div class="tabs-menu">
+        <span class="tabs-menu_btn"><i class="fa fa-bars"></i></span>
+        <ul class="tabs-menu_title tabs-title">
+          {% for block in section.blocks %}
+          {% assign col = block.settings.prt_collection %}            	
+          <li class="tabs-menu-label" data-url="{{ collections[col].url }}" data-tab="tab-{{ block.id }}">
+            <span>{% if block.settings.title !="" %}{{block.settings.title}}{% else %}{{ collections[col].title }}{% endif %}</span>
+          </li> 
+          {% endfor %}
+        </ul> 
+      </div>
+      <div class="products-listing grid">
+        {% for block in section.blocks %}
+        {% assign col = block.settings.prt_collection %}
+        <div class="product-layout tab-content" id="tab-{{ block.id }}">
+          <div class="row">
+            {% for product in collections[col].products limit: limit_product %}                     
+            {% for tag in product.tags %}  
+            {% if tag contains "deal" %}
+            <div class="col-xl-3 col-lg-3 col-sm-4 col-12 product">
+              {% include 'product-deal' %}
+            </div>                            
+            {% endif %} 
+            {% endfor %}
+            {% endfor %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% schema %}
+  {
+    "name": "Hotdeal Page",
+    "settings": [
+      {
+      "type": "header",
+      "content": "Setting Hot deal page"
+      },
+		{
+        "type": "checkbox",
+        "id": "display_image_cat",
+        "label": "Display Image Category?",
+        "default": true
+      },
+      {
+        "type": "image_picker",
+        "id": "img_cat",
+        "label": "Image Category"
+      },
+	  {
+        "type": "text",
+        "id": "limit_product",
+        "label": "Product items per page",
+        "default": "12"
+      }
+    ],
+  "blocks": [
+       {
+            "type": "product",
+            "name": "Add tabs",
+            "settings": [
+              {
+                "type": "text",
+                "id": "title",
+                "label": "Title",
+                "info": "Default collection title if empty."
+              },
+              {
+                "type": "collection",
+                "id": "prt_collection",
+                "label": "Select collection"
+              }
+          ]
+       }
+    ]
+  }
+{% endschema %}

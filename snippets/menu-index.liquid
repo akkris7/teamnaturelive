@@ -1,0 +1,45 @@
+{% if section.settings.image_size != blank %}
+{% assign image_size = section.settings.image_size %}
+{% else %}
+{% assign image_size = 'master' %}
+{% endif %}
+
+{% assign grid_image_scale = '2' %}
+
+{% assign on_sale = false %}
+{% assign sale_text = 'products.product.sale' | t %}
+{% if product.compare_at_price > product.price %}
+{% assign on_sale = true %}
+{% endif %}
+
+{% assign sold_out = true %}
+{% assign sold_out_text = 'products.product.sold_out' | t %}
+{% assign sTT = 'products.product.outOfStock' | t %}
+{% if product.available %}
+{% assign sold_out = false %}
+{% assign sTT = 'products.product.inStock' | t %}
+{% endif %}
+
+<div class="product-item" data-id="product-{{ product.id }}">
+    <div class="right-block">
+      <div class="caption">
+        {% if settings.show-title %}
+        <h4 class="title title-product text-truncate"><a class="product-name" href="{{ product.url }}">{{ product.title }}</a></h4>
+        {% endif %}
+        <div  class="dot"></div>
+         {% if settings.show-price %}
+        <div class="price">
+          {% include 'product-price' %}
+        </div>
+        {% endif %}
+       
+        
+      </div>
+      <div class="rte description">  
+         {{ product.description }}
+          
+                   
+        </div>
+      
+    </div> 
+</div>

@@ -1,0 +1,119 @@
+{% if section.settings.results_per_page %}
+{%- assign limit = section.settings.results_per_page -%}
+{% else %}
+{%- assign limit = 10 -%}
+{% endif %}
+
+
+{%- assign _item = settings.mode_view_default -%}
+{% case settings.mode_view_default %}
+{% when 'grid-2' %}
+{%- assign grid_item_width = 'col-xl-6 col-lg-4 col-md-4 col-sm-4 col-xs-6' -%}
+{%- assign image_size = '600x' -%}
+{% when 'grid-3' %}
+{%- assign grid_item_width = 'col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-6' -%}
+{%- assign image_size = '500x' -%}
+{% when 'grid-4' %}
+{%- assign grid_item_width = 'col-xl-2 col-lg-3 col-md-4 col-sm-4 col-xs-6' -%}
+{%- assign image_size = '300x' -%}
+
+{% endcase %}
+
+{% paginate collection.products by limit %}
+<div data-section-id="{{ section.id }}" data-section-type="collection-template" class="products-collection">
+  <div class="product-wrapper" id="Collection">
+    <div class="products-listing row {{ section.settings.pagination_style }}">
+      {% for product in collection.products %}
+      <div id="product-{{ forloop.index | plus:paginate.current_offset }}" class="product product-layout grid__item grid__item--{{section.id}} {{ grid_item_width }} {% if _item == '2' %}grid_2{% endif %}{% if _item == '3' %}grid_3{% endif %}{% if _item == '4' %}grid_4{% endif %}{% if _item == '5' %}grid_5{% endif %}{% if _item == '6' %}grid_6{% endif %}" data-price="{{ product.price | money_without_currency }}">
+        <span class="d-none">{{ product.price | money }}</span>
+        {% include 'product-card-grid', grid_image_width: image_size %}
+      </div>
+      {% endfor %}
+      {% if section.settings.pagination_style =='default' %}
+      {% if paginate.pages > 1 %}
+      <div class="d-flex justify-content-center col-12">
+        {% include 'pagination-custom' %}
+      </div>
+      {% endif %}
+      {% else %}
+      {% if paginate.next %}
+      <div class="pagination loadmore d-flex justify-content-center col-12">
+        <a class="btn btn-default loadmore" href="{{ paginate.next.url }}">{{ 'collections.general.load_more' | t}}</a>
+      </div>
+      {% endif %}
+      {% endif %}
+    </div>
+    {% if is_empty_collection %}
+    <div class="small--text-center">
+      <p class="text-left">{{ 'collections.general.no_matches' | t }}</p>
+    </div>
+    {% endif %}
+
+
+  </div>
+</div>
+{% endpaginate %}
+
+{% schema %}
+{
+"name": "Collection Pages",
+"settings": [
+{
+"type":      "radio",
+"id":        "pagination_style",
+"label":     "Pagination style",
+"options": [
+{ "value": "default", "label": "Default" },
+{ "value": "EndlessScroll", "label": "Scroll" },
+{ "value": "EndlessClick", "label": "Click" }
+],
+"default":   "EndlessClick"
+},
+
+{
+"type": "select",
+"id": "rows",
+"label": "Rows per page (grid only)",
+"default": "2",
+"options": [
+{
+"value": "2",
+"label": "2"
+},
+{
+"value": "3",
+"label": "3"
+},
+{
+"value": "4",
+"label": "4"
+},
+{
+"value": "5",
+"label": "5"
+},
+{
+"value": "6",
+"label": "6"
+},
+{
+"value": "7",
+"label": "7"
+},
+{
+"value": "8",
+"label": "8"
+}
+]
+},
+{
+"type": "text",
+"id": "results_per_page",
+"label": "Products per page  (grid only) ",
+"default": "15"
+}
+
+]
+
+}
+{% endschema %}

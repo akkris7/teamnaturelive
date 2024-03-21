@@ -1,0 +1,230 @@
+<div class="container page-contact no-padding">
+  <h2 class="title-page">{{ page.title }}</h2>
+  <div class="row">
+    <div class="info-contacts col-12">
+      <div class="contact-map-wrap">
+        {% if section.settings.display_google_map %}
+        <div class="block-map">
+          <div class="block-content">
+            {% if section.settings.google_map_code != blank %}
+            {{ section.settings.google_map_code }}
+            {% endif %}
+          </div>
+        </div>
+        {% endif %}	
+      </div>
+    </div>    
+    <div class="contact-form col-12">
+      <div class="row form-contact">
+        <div class="col-lg-4 col-md-4">
+          {% if section.settings.title_info != blank %}
+          <div class="title-bonus-page">
+            <h2>{{ section.settings.title_info }}</h2>
+          </div>
+          {% endif %}
+          {% if section.settings.contact_text_desc != blank %}
+          <div class="contact-des">
+            {{ section.settings.contact_text_desc }}
+          </div>
+          {% endif %}
+          <ul class="list-info">
+            <li class="item-info main-info">
+              <div class="info-content">
+                {%- if section.settings.icon_1 != blank -%}
+                <i class="fa fa-{{ section.settings.icon_1 }}"></i>
+                {% else %}
+                <i class="fa fa-map-marker"></i>
+                {%- endif -%}
+                {% if section.settings.title_1 != blank %}
+                {{ section.settings.title_1 }}
+                {% endif %}
+                {% if section.settings.des_1 != blank %}
+                <span class="des-info">{{ section.settings.des_1 }}</span>
+              </div>
+              {% endif %}
+            </li>
+            <li class="item-info email-info">
+              <div class="info-content">
+                {%- if section.settings.icon_2 != blank -%}
+                <i class="fa fa-{{ section.settings.icon_2 }}"></i>
+                {% else %}
+                <i class="fa fa-envelope"></i>
+                {%- endif -%}
+                {% if section.settings.title_2 != blank %}
+                {{ section.settings.title_2 }}
+                {% endif %}
+                {% if section.settings.des_2 != blank %}
+                <span class="des-info"><a href="mailto:{{ section.settings.des_2 }}">{{ section.settings.des_2 }}</a></span>
+              </div>
+              {% endif %}
+            </li>
+            <li class="item-info phone">
+              <div class="info-content">
+                {%- if section.settings.icon_3 != blank -%}
+                <i class="fa fa-{{ section.settings.icon_3 }}"></i>
+                {% else %}
+                <i class="fa fa-phone"></i>
+                {%- endif -%}
+                {% if section.settings.title_3 != blank %}
+                {{ section.settings.title_3 }}
+                {% endif %}
+                {% if section.settings.des_3 != blank %}
+                <span class="des-info"><a href="tel:{{ section.settings.des_3 }}">{{ section.settings.des_3 }}</a></span>
+              </div>
+              {% endif %}
+            </li>
+          </ul>
+        </div>
+        <div class="col-lg-8 col-md-8">
+          {% if section.settings.title_form != blank %}
+          <div class="title-bonus-page">
+            <h2>{{ section.settings.title_form }}</h2>
+          </div>
+          {% endif %}
+          {% if page.content.size > 0 %}
+          <div class="rte">
+            {{ page.content }}
+          </div>
+          {% endif %}
+          <div class="contact-form form-vertical">
+            {% form 'contact' %}
+
+            {% if form.posted_successfully? %}
+            <p class="note form-success">
+              <i class="fa fa-check"></i>
+              {{ 'contact.form.post_success' | t }}
+            </p>
+            {% endif %}
+
+            {{ form.errors | default_errors }}
+
+            <div class="row">
+              <div class="col-12 col-sm-6">
+                <label class="hidden" for="ContactFormName">{{ 'contact.form.name' | t }}</label>
+                <input type="text" id="ContactFormName" name="contact[name]" placeholder="{{ 'contact.form.name' | t }}" value="{% if form[name] %}{{ form[name] }}{% elsif customer %}{{ customer.name }}{% endif %}">
+              </div>
+              <div class="col-12 col-sm-6">
+                <label class="hidden" for="ContactFormEmail" class="{% if form.errors contains 'email' %}label--error{% endif %}">{{ 'contact.form.email' | t }}</label>
+                <input type="email" id="ContactFormEmail" name="contact[email]" placeholder="{{ 'contact.form.email' | t }}" autocorrect="off" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}" class="{% if form.errors contains 'email' %}input--error{% endif %}">
+              </div>
+            </div>
+
+            <label class="hidden" for="ContactFormPhone">{{ 'contact.form.phone' | t }}</label>
+            <input type="tel" id="ContactFormPhone" name="contact[phone]"  placeholder="{{ 'contact.form.phone' | t }}" pattern="[0-9\-]*" value="{% if form[phone] %}{{ form[phone] }}{% elsif customer %}{{ customer.phone }}{% endif %}">
+
+            <label class="hidden" for="ContactFormMessage">{{ 'contact.form.message' | t }}</label>
+            <textarea rows="10" id="ContactFormMessage" placeholder="{{ 'contact.form.message' | t }}" name="contact[body]">{% if form.body %}{{ form.body }}{% endif %}</textarea>
+
+            <input type="submit" class="btn" value="{{ 'contact.form.submit' | t }}">
+
+            {% endform %}	
+          </div>	
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+<style>
+  .main-content{
+    padding-bottom: 0 !important; 
+  }
+</style>
+{% schema %}
+{
+"name": "Contact Page",
+"settings": [
+      {
+        "type": "header",
+        "content": "Setting Maps"
+      },
+          {
+            "type": "checkbox",
+            "id": "display_google_map",
+            "label": "Display Google Map?",
+            "default": true
+          },
+          {
+            "type": "textarea",
+            "id": "google_map_code",
+            "label": "Google Map Code"
+          },
+      {
+        "type": "header",
+        "content": "Infomation"
+      },
+          {
+            "type": "text",
+            "id": "title_info",
+            "label": "Title Info",
+            "default":"CONTACT US"
+          },
+          {
+            "type": "textarea",
+            "id": "contact_text_desc",
+            "label": "Text Description",
+            "default":"Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam</br> Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat sed do eiusmod tempor"
+          },
+          {
+            "type": "text",
+            "id": "title_1",
+            "label": "Title 1"
+          },
+          {
+            "type": "text",
+            "id": "des_1",
+            "label": "Descrip 1"
+          },
+          {
+            "type": "text",
+            "id": "icon_1",
+            "label": "Icon 1",
+            "default":"map-marker"
+          },
+          {
+            "type": "text",
+            "id": "title_2",
+            "label": "Title 2"
+          },
+          {
+            "type": "text",
+            "id": "des_2",
+            "label": "Descrip 2"
+          },
+          {
+            "type": "text",
+            "id": "icon_2",
+            "label": "Icon 2",
+            "default":"phone"
+          },
+          {
+            "type": "text",
+            "id": "title_3",
+            "label": "Title 3"
+          },
+          {
+            "type": "text",
+            "id": "des_3",
+            "label": "Descrip 3"
+          },
+          {
+            "type": "text",
+            "id": "icon_3",
+            "label": "Icon 3",
+            "default":"envelope"
+          },
+      {
+        "type": "header",
+        "content": "Form Comment"
+      },
+          {
+            "type": "text",
+            "id": "title_form",
+            "label": "Title Form Comment",
+            "default":"SEND YOUR COMMENTS"
+          }
+	]
+}
+{% endschema %}
+

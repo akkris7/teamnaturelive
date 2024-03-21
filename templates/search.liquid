@@ -1,0 +1,53 @@
+{% include 'breadcrumb' %}
+{% assign respond_js_secret_key = shop.domain | md5 %}
+{% unless search.terms == respond_js_secret_key %}
+<section id="page-search">
+  <div class="container">
+    <div class="search-wrap">
+      {% paginate search.results by 12 %}
+      {% if search.performed %}
+      {% if search.results_count == 0 %}
+      <h2 class="page-title">{{ 'general.search.title' | t }}</h2>
+      {% else %}
+      <h2 class="page-title">{{ 'general.search.results_with_count' | t: terms: search.terms, count: search.results_count }}</h2>
+      {% endif %}
+      {% else %}
+      <h2 class="page-title">{{ 'general.search.title' | t }}</h2>
+      {% endif %}
+      <div class="row">
+        <form class="formSearch col-md-6 col-xs-12" action="/search" method="get">
+          <input type="hidden" name="type" value="product" />
+          <input type="search" name="q" value="{{ search.terms | escape }}" placeholder="{{ 'general.search.placeholder' | t }}" class="bingoSearch form-control" />
+          <button type="submit" class="btn btn-search">
+            <span class="fa fa-search"></span>
+            <span class="btnSearchText">{{ 'general.search.submit' | t }}</span>
+          </button>
+        </form>
+      </div>
+      {% if search.performed %}
+      {%- assign proImageSize = '270x' -%}
+      <div class="pageProducts">
+        <div class="products-listing grid">
+          <div class="row">
+            {% for product in search.results %}
+            <div class="product-layout col-xl-3 col-sm-4 col-12">
+            {% include 'product-card-grid'%}
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      {% endif %}
+      {% if paginate.pages > 1 %}
+      <div class="padding">
+        {% include 'pagination-custom' %}
+      </div>
+      {% endif %}
+      {% endpaginate %}
+    </div>
+  </div>
+</section>
+{% else %}
+{% include 'respond' %}
+{% layout none %}
+{% endunless %}

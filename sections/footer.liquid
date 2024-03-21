@@ -1,0 +1,229 @@
+
+<footer data-section-id="{{ section.id }}" data-section-type="header-section" class="site-footer clearfix">
+  {% include 'footer-1' %}
+
+</footer>
+
+   
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Footer Layout"
+    },
+	{
+      "type": "header",
+      "content": "Footer Top Setting"
+    },
+	{
+      "type": "checkbox",
+      "id": "footer_top_enable",
+      "label": "Enable Footer Top",
+      "default": true
+    },
+	{
+      "type": "color",
+      "id": "bg_headertop",
+      "label": "BG Header Top",
+      "default": "#eeeeee"
+    },
+	 {
+      "type": "text",
+      "id": "footer_socials",
+      "label": "Title Socials",
+      "default": "Follow Socials"
+    },
+	
+	{
+      "type": "header",
+      "content": "Footer Top Newleter"
+    },
+	{
+      "type": "checkbox",
+      "id": "footer_newleter_enable",
+      "label": "Enable Newsletter",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "footer_title_4",
+      "label": "Title Newsletter",
+      "default": "Newsletter"
+    },
+ 
+	{
+      "type": "header",
+      "content": "Footer Center Setting"
+    },
+	{
+      "type": "checkbox",
+      "id": "footer_center_enable",
+      "label": "Enable Footer Center?",
+      "default": true
+    },
+	{
+      "type": "color",
+      "id": "bg_headercenter",
+      "label": "BG Header Center",
+      "default": "#fff"
+    },
+    {
+      "type": "header",
+      "content": "Footer Center Column 1"
+    },
+    {
+      "type": "checkbox",
+      "id": "footer_co1_enable",
+      "label": "Enable",
+      "default": true
+    },
+	{
+      "type": "text",
+      "id": "footer_title_1",
+      "label": "Column 1 Title",
+      "default": "your links"
+    },
+    {
+      "type": "text",
+      "id": "footer_contact_address",
+      "label": "Address",
+      "placeholder": "Address",
+      "default": "Address"
+    },
+    {
+      "type": "text",
+      "id": "footer_contact_phone",
+      "label": "Phone",
+      "placeholder": "Phone"
+    },
+    {
+      "type": "text",
+      "id": "footer_contact_email",
+      "label": "Email",
+      "placeholder": "Email"
+    },
+	 {
+      "type": "text",
+      "id": "footer_contact_time",
+      "label": "Time",
+      "placeholder": "Time"
+    },
+    {
+      "type": "header",
+      "content": "Footer Center Column 2"
+    },
+    {
+      "type": "checkbox",
+      "id": "footer_co2_enable",
+      "label": "Enable",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "footer_title_2",
+      "label": "Column 2 Title",
+      "default": "your links"
+    },
+
+    {
+      "type": "link_list",
+      "id": "footer_linklist_2",
+      "label": "Footer Column 2"
+    },
+    {
+      "type": "header",
+      "content": "Footer Center Column 3"
+    },
+    {
+      "type": "checkbox",
+      "id": "footer_co3_enable",
+      "label": "Enable ?",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "footer_title_3",
+      "label": "Column 3 Title",
+      "default": "your links"
+    },
+    {
+      "type": "link_list",
+      "id": "footer_linklist_3",
+      "label": "Footer Column 3"
+    },
+	{
+      "type": "header",
+      "content": "Footer Center Column 4"
+    },
+    {
+      "type": "checkbox",
+      "id": "footer_co4_enable",
+      "label": "Enable ?",
+      "default": true
+    },
+	{
+      "type": "text",
+      "id": "footer_tl_4",
+      "label": "Column 4 Title",
+      "default": "your links"
+    },
+    {
+      "type": "link_list",
+      "id": "footer_linklist_4",
+      "label": "Footer Column 4"
+    },
+	
+	{
+      "type": "header",
+      "content": "Footer Categories HTML"
+    },
+
+	{
+      "type": "header",
+      "content": "Footer Bottom Setting"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_bottom",
+      "label": "Enable Footer Bottom?",
+      "default": false
+    },
+	{
+      "type": "header",
+      "content": "Footer CopyRight"
+    },
+	{
+      "type": "color",
+      "id": "bg_headerbottom",
+      "label": "BG Header Bottom",
+      "default": "#232f3e"
+    },
+
+	
+	{
+      "type": "header",
+      "content": "Footer Payment"
+    },
+	{
+      "type": "checkbox",
+      "id": "footer_show_pay",
+      "label": "Enable ?",
+      "default": true
+    },
+	{
+      "type": "image_picker",
+      "id": "img_payment_ft",
+      "label": "Img Payment Footer"
+    },
+	{
+      "type": "url",
+      "id": "link_pay",
+      "label": "Link Img Payment Footer",
+      "info": "link Img Payment Footer"
+    }
+  ]
+}
+{% endschema %}
+

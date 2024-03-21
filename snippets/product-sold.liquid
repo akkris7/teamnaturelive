@@ -1,0 +1,10 @@
+
+{% assign productStartCount = product.metafields.stock.initial | times:1 %}
+{% if productStartCount > 0 %}
+  	{% assign productInventory = product.variants.first.inventory_quantity %}
+	{% assign productStartCount = productStartCount | minus:productInventory %} 
+
+  	<div class="product-single__sold"><i class="fa fa-free-code-camp" aria-hidden="true"></i> {{ 'products.product.product_inventory' | t: productSold: productStartCount , inventory :  productInventory }}</div>
+	
+{% endif %}
+

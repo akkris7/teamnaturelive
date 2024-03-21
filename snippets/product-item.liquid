@@ -1,0 +1,27 @@
+{% assign on_sale = false %}
+{% assign sale_text = 'products.product.sale' | t %}
+{% if product.compare_at_price > product.price %}
+{% assign on_sale = true %}
+{% endif %}
+
+{% assign sold_out = true %}
+{% assign sold_out_text = 'products.product.sold_out' | t %}
+{% if product.available %}
+{% assign sold_out = false %}
+{% endif %} 
+
+<div class="product-item clearfix {% if sold_out %} sold-out{% endif %}{% if on_sale %} on-sale{% endif %}">
+  <a href="{{ product.url | within: collection }}" class="product-img">
+    <img class="lazyload" data-sizes="auto" src="{{ "icon-loadings.svg" | asset_url }}" data-src="{{ product.featured_image.src | img_url: '80x80' }}" alt="{{ product.featured_image.alt | escape }}">
+  </a>
+  <div class="product-info"> 
+    <div class="text-truncate"><a href="{{ product.url | within: collection }}" title="{{ product.title }}" class="product-name">{{ product.title | truncatewords: 10 }}</a></div>
+    <div class="custom-reviews a-left hidden-xs">          
+      <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>          
+    </div>
+    <div class="price">
+      {% include 'product-price' %}
+    </div>
+  </div>
+</div>
+

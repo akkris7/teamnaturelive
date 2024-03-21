@@ -1,0 +1,385 @@
+{% comment %}
+  MAGENTECH 
+  Based on FrameWork v1.0.1 | SN License |
+  DOCUMENT: https://help.shopify.com/manual/sell-online/online-store/menus-and-links
+{% endcomment %}
+
+{% capture parent %}
+{% for i in (1..4) %}
+{% capture enable %}meg_{{ i }}{% endcapture %}
+{% capture cParent %}meg_{{ i }}_cal{% endcapture %}
+{% if settings[enable] and settings[cParent] != '' %}
+{{settings[cParent] | handleize | md5  | append: '|' }}
+{% endif %}
+{% endfor %}
+{% endcapture %}
+{% assign menu_title 	= section.settings.ver_title %}
+{% assign url_all 		= section.settings.ver_url %}
+<div class="widget-verticalmenu">
+  <div class="vertical-content">
+    
+    
+       <div class="navbar-vertical">
+      <button style="background: {{ section.settings.ver_bg_color }}" type="button" id="show-verticalmenu" class="navbar-toggles">
+        <i class="fa fa-bars"></i>
+         <span class="title-nav">{{ menu_title }}</span>
+      </button>
+      
+    </div>
+    
+    <div class="vertical-wrapper">
+      <div class="menu-remove d-block d-lg-none">
+        <div class="close-vertical"><i class="material-icons">&#xE14C;</i></div>
+      </div>
+      <ul class="vertical-group">
+    
+    
+ <!-- added code for side bar in main page (START) - Shajesh -->         
+  <!--      
+    
+    <div class="block block-category spaceBlock">
+ {% if settings.sidebar_categories_title != blank %}
+  <h3 class="block-title">
+    {{ settings.sidebar_categories_title }}
+  </h3>
+  {% endif %}
+  <div class="widget-content">  
+      <ul class="toggle-menu list-menu">     
+        {% for link in linklists[settings.categories_menu].links %}       
+        {% assign child_list_handle = link.title | handleize %}
+
+        {% if linklists[child_list_handle].links != blank %}
+        <li class="{% if link.active %}active{% endif %} toggle-content">
+
+          <a href="{{ link.url }}">{{ link.title | capitalize }}<span class="count">{% if collections[child_list_handle].title !="" %}( {{collections[child_list_handle].products_count}} ){% endif %}</span><span class="caret"><i class="fa fa-angle-down"></i></span></a>
+          <ul class="sub-menu level-1">
+            {% for childlink in linklists[child_list_handle].links %}
+            {% assign child2_list_handle = childlink.title | handleize %}      
+            {% if linklists[child2_list_handle].links != blank %}
+
+            <li {% if childlink.active %} class="active"{% endif %}>
+              <a href="{{ childlink.url }}" >{{ childlink.title | capitalize }}<span class="count">{% if collections[child2_list_handle].title !="" %}( {{collections[child2_list_handle].products_count}} ){% endif %}</span><span class="caret"><i class="fa fa-angle-down"></i></span></a>              
+              <ul class="sub-menu level-2">
+                {% for childlink2 in linklists[child2_list_handle].links %}
+                <li{% if childlink2.active %} class="active"{% endif %}>  
+                  <a href="{{ childlink2.url }}">{{ childlink2.title | capitalize }}<span class="count">{% if collections[childlink2.title].title !="" %}( {{collections[childlink2.title].products_count}} ){% endif %}</span></a>
+                </li>
+                {% endfor %}
+              </ul>            
+            </li>
+            {% else %}
+
+            <li {% if childlink.active %} class="active"{% endif %}>
+              <a href="{{ childlink.url }}" >{{ childlink.title | capitalize }}<span class="count">{% if collections[child2_list_handle].title !="" %}( {{collections[child2_list_handle].products_count}} ){% endif %}</span></a>              
+            </li>
+            {% endif %}
+            {% endfor %}
+          </ul>
+        </li>    
+        {% else %}
+
+        <li {% if link.active %} class="active"{% endif %}>
+
+          <a href="{{ link.url }}">{{ link.title | capitalize }}<span class="count">{% if collections[child_list_handle].title !="" %}( {{collections[child_list_handle].products_count}} ){% endif %}</span></a>
+        </li>
+        {% endif %}
+        {% endfor %}      
+      </ul>  
+  </div> 
+</div>
+    -->
+    
+  <!-- added code for side bar in main page (START) - Shajesh -->   
+    
+  
+      
+    
+ 
+    
+        {% if section.blocks.size > 0 %}
+        {% for block in section.blocks %}
+        {% assign _col_menu 		= block.settings.menu_col_column %}
+        {% assign _col_item 		= block.settings.menu_item_col %}
+        {% assign _col_product 		= block.settings.product_col_column %}
+        {% assign _col_item_product	= block.settings.product_item_col %}
+        {% assign _col_html			= block.settings.html_col_column %}
+        {% assign _col_banner 		= block.settings.banner_col_column %}
+        {% assign _col_banner2 		= block.settings.banner_col_column2 %}
+        {% assign _col_page 		= block.settings.page_col_column %}
+        {% assign _menu 			= block.settings.item_linklist %}
+        {% assign _link_item 		= link.title %}
+        <li class="vertical-item level1 toggle-menu{% if block.settings.dropdown_type == 'css_drop' %} vertical_drop css_parent{% elsif block.settings.dropdown_type == 'mega_drop' %} vertical_drop mega_parent{% endif %}">
+          <a class="menu-link" href="{{ block.settings.menu_url }}">
+            {% if block.settings.enable_menu_icon %}
+            {% if block.settings.menu_icon != blank %}
+            <span class="icon_items"><img class="img-responsive" alt="{{ block.settings.title | escape }}" src="{{ block.settings.menu_icon | img_url: 'master' }}" /></span>
+            {% else %}
+            {% if block.settings.font_icon != blank %}
+            <span class="icon_items"><i class="fa fa-{{ block.settings.font_icon }}"></i></span>
+            {% endif %}
+            {% endif %}
+            {% endif %}
+            <span class="menu-title">{{ block.settings.title }}</span>
+            {% if block.settings.dropdown_type == 'css_drop' or block.settings.dropdown_type == 'mega_drop' %}
+            <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span>
+            {% endif %}
+          </a>
+
+          {% if block.settings.dropdown_type == 'css_drop' %}
+          {% assign child_list_handle = block.settings.title | handleize %}
+          {% if linklists[_menu].links != blank %}
+          <ul class="vertical-drop drop-css drop-lv1 sub-menu" style="width: {{ block.settings.megamenu_width_col }};">
+            {% assign ifor = forloop.index %}
+            {% for link1 in linklists[_menu].links %}
+            {% assign child_list_handle = link1.title | handleize %}
+            {% if linklists[child_list_handle].links != blank %}
+            <li class="vertical-item sub-dropdown toggle-menu">
+              <a class="menu-link" href="{{ link1.url }}" title="">{{ link1.title }}<span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span></a>
+
+              <ul class="vertical-drop drop-lv2 dropdown-content sub-menu">
+                {% assign ifor1 = forloop.index %}
+                {% for link2 in linklists[child_list_handle].links %}
+                {% assign child_list_handle = link2.title | handleize %}
+                {% if linklists[child_list_handle].links != blank %}
+                <li class="vertical-item level2 sub-dropdown{% if link2.active %} active{% endif %}">
+                  <a class="menu-link" href="{{ link2.url }}" title="">{{ link2.title }}<span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span></a>
+
+                  <ul class="vertical-drop drop-lv3 dropdown-content sub-menu">
+                    {% for link3 in linklists[child_list_handle].links %}
+                    <li class="vertical-item level3 {% if link3.active %}active{% endif %}">
+                      <a href="{{ link3.url }}" title="">{{ link3.title }}</a>
+                    </li>
+                    {% endfor %}
+                  </ul>
+                </li>
+                {% else %}
+                <li class="vertical-item level2 {% if link2.active %}active{% endif %}">
+                  <a href="{{ link2.url }}" title="">{{ link2.title }}</a>
+                </li>
+                {% endif %}
+                {% endfor %}
+              </ul>
+            </li>
+            {% else %}
+            <li class="vertical-item">
+              <a href="{{ link1.url }}" title="">{{ link1.title }}</a>
+            </li>
+            {% endif %}
+            {% endfor %}
+          </ul>
+          {% endif %}
+          {% endif %}
+          {% if block.settings.dropdown_type == 'mega_drop' %}
+          {% assign child_list_handle = block.settings.title | handleize %}
+          {% assign _custom_class 	= block.settings.megamenu_class %}
+          <div class="vertical-drop drop-mega drop-lv1 sub-menu {{ _custom_class }}" style="width: {{ block.settings.megamenu_width_col }};">
+            <div class="row">
+              {% if block.settings.menu_show %}
+              <div class="ss_megamenu_col col_menu col-lg-{{ _col_menu }}">
+                <div class="row">
+                  {% for link1 in linklists[_menu].links %}
+                  {% assign child_list_handle = link1.title | handleize %}
+                  {% assign icon  = link1.title |  split: '[' | last  | split: ']' | first %}
+                  <div class="ss_megamenu_col col-lg-{{ _col_item }}">
+                    <ul class="content-links">
+                      <li class="ss_megamenu_lv2 menuTitle{% if link1.active %} active{% endif %}">
+                        {%- assign icon  = link1.title |  split: '[' | last  | split: ']' | first -%}
+                        <a class="{{ icon }}" href="{{ link1.url }}" title="">{{ link1.title | split: '[' | first }}</a>
+                      </li>
+                      {% for link2 in linklists[child_list_handle].links %}
+                      <li class="ss_megamenu_lv3 {% if link2.active %}active{% endif %}">
+                        <a href="{{ link2.url }}" title="">{{ link2.title }}</a>
+                      </li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+              {% endif %}
+            
+            </div>
+          </div>
+          {% endif %}
+        </li>
+        {% endfor %}
+        {% endif %}
+      
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="vertical-screen d-block d-lg-none">&nbsp;</div>
+{% schema %}
+	{
+      	"name": "Menu Vertical",
+      	"settings": [
+			{
+              "type": "header",
+              "content": "Menu Garenal Settings"
+            },
+			{
+              "type": "color",
+              "id": "ver_bg_color",
+              "label": "Vetical Background Color",
+              "default": "#333"
+            },
+            {
+              "type": "color",
+              "id": "ver_menu_color",
+              "label": "Vetical Menu Text Color ",
+              "default": "#fff"
+            }, 
+            {
+                "type": "text",
+                "id": "ver_title",
+                "label": "Vetical Title Menu",
+                "default": "All Categories"
+            }
+          
+      	],
+        "blocks": [
+            {
+                "type": "text",
+                "name": "Menu Item",
+                "settings": [
+					{
+                      "type": "header",
+                      "content": "Item Title Settings"
+                    },
+                    {
+                        "type": "text",
+                        "id": "title",
+                        "label": "Item Menu title",
+                        "placeholder": "Item Name title",
+						"default": "Item Title"
+                    },
+                    {
+                        "type": "url",
+                        "id": "menu_url",
+                        "label": "Item Menu link"
+                    },
+					{
+                      "type": "header",
+                      "content": "Item Icon Settings"
+                    },
+					{
+                        "type": "checkbox",
+                        "id": "enable_menu_icon",
+                        "label": "Enable Icon Item ?",
+						"default": false
+					},
+					{
+                        "type": "text",
+                        "id": "font_icon",
+                        "label": "Use icon Font (Font Awesome)",
+                        "info": "[Use Font Awesome](http:\/\/fontawesome.io\/v4.7.0\/icons\/) Ex: desktop",
+						"default":"desktop"
+                    },
+					{
+                        "type": "image_picker",
+                        "id": "menu_icon",
+                        "label": "Use icon image",
+						"info": "Use icon image 15x15px"
+                    },
+					{
+                      "type": "header",
+                      "content": "Item Dropdown Settings"
+                    },
+                    {
+                        "type": "select",
+                        "id": "dropdown_type",
+                        "label": "Menu Dropdown type",
+                        "default": "none",
+                        "options": [
+                            {
+                                "value": "none",
+                                "label": "None Dropdown"
+                            },
+                            {
+                                "value": "css_drop",
+                                "label": "Dropdown Css"
+                            },
+                            {
+                                "value": "mega_drop",
+                                "label": "Dropdown Mega"
+                            }
+                        ]
+                    },
+					{
+                        "type": "text",
+                        "id": "megamenu_width_col",
+                        "label": "Width for Dropdown Menu",
+						"default": "900px",
+                        "info": "Ex: '900px'.Only Used For Dropdown Mega"
+                    },
+					{
+                        "type": "text",
+                        "id": "megamenu_class",
+                        "label": "Class Custom Dropdown",
+                        "info": "Used Class Custom css. Only Used For Dropdown Mega"
+                    },
+                    {
+                        "type": "header",
+                        "content": "Setting Menu Nav"
+                    },
+                    {
+                        "type": "checkbox",
+                        "id": "menu_show",
+                        "label": "Enable navigation"
+                    },
+                    {
+                      "type": "link_list",
+                      "id": "item_linklist",
+                      "label": "Select Menu"
+                    },
+					{
+                        "type":      "range",
+                        "id":        "menu_col_column",
+                        "min":       1,
+                        "max":        12,
+                        "step":       1,
+                       
+                        "label":     "Menu Column",
+                        "default":   12,
+						"info": "Column menu. For ex: 12= Width: 100%"
+                    },
+					{
+                        "type":      "range",
+                        "id":        "menu_item_col",
+                        "min":       1,
+                        "max":        12,
+                        "step":       1,
+                        "label":     "Item Column",
+                        "default":   12,
+						"info": "This field is applicable only for top-level menu. For ex: 12= Width: 100%"
+                    }
+					
+					
+                    
+                ]
+            }
+        ],
+		"presets": [{
+      "name": "SS Vertical Menu",
+      "category": "Menu",
+      "settings": {
+
+      },
+      "blocks": [
+        {
+          "type": "text"
+        },
+        {
+          "type": "text"
+        },
+		{
+          "type": "text"
+        },
+		{
+          "type": "text"
+        }
+      ]
+    }]
+  	}
+{% endschema %}

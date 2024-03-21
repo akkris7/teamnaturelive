@@ -1,0 +1,183 @@
+<div class="clearfix" id="quickview-template" style="display:none">
+  <div class="overlay"></div>
+  <div class="content clearfix">
+    <a href="javascript:void(0)" class="close-quickview"><i class="fa fa-remove"></i></a> 
+    <div class="row">
+      <div class="qv-left product-img-box col-md-5">
+        <div class="quickview-image"></div>
+        <div class="more-view-wrapper">
+          <ul class="product-photo-thumbs owl-carousel">
+          </ul>
+        </div>
+      </div>
+      <div class="qv-right product-shop col-md-7">
+        <div class="product-item">
+          <h2 class="product-title"><a>&nbsp;</a></h2>
+
+          <div class="box-price">
+
+            <span class="price price-new"></span>
+            <span class="compare-price price-old"></span>
+          </div>
+          <div class="product-info">
+            <p class="product-inventory">
+              <label>{{ 'products.product.availability' | t }}</label>
+              <span></span>
+            </p>
+            <p class="product-type">
+              <label>{{ 'products.product.type' | t }}</label>
+              <span></span>
+            </p>
+            <p class="product-vendor">
+              <label>{{ 'products.product.vendor' | t }}</label>
+              <span></span>
+            </p>
+          </div>
+          <p class="product-description"></p>
+          <div class="details clearfix">
+       
+            
+         <form action="/cart/add" method="post" class="variants"> 
+              <select name='id' style="display:none"></select>
+             
+              <div class="add-to-box clearfix">
+                <div class="total-price">
+                  <label>{{ 'cart.general.subtotal' | t }}</label><span class="money"></span>
+                </div>
+                <div class="wrap-qty">
+                  <label>{{ 'cart.label.qt' | t }}:</label>
+                  <div class="qty-set">
+                    <input type="text" name="quantity" value="1" class="quantity">
+                    <div class="inc button">+</div>
+                    <div class="dec button">-</div>
+                  </div>
+                </div>
+                <div class="actions">
+            
+          <div class="qv-add-to-cart">
+            <div class="qv-product-options"></div>
+          <input type="submit" value="Add To Cart"  name="add" class="btn product-form__cart-submit{% if product.options.size == 1 and product.variants[0].title == 'Default Title' %} product-form__cart-submit--small{% endif %}"  />
+		   <div class="qv-add-to-cart-response"></div>
+        </div> 
+                  
+             <!--     <input type="button" class="qv-add-button" value="Add to Cart">
+                  <div class="qv-add-to-cart-response"></div> 
+
+   <div class="qv-add-to-cart">
+            <div class="qv-product-options"></div>
+           <input type="submit" class="qv-add-button" value="Add to Cart">
+            <div class="qv-add-to-cart-response"></div>
+        </div> 
+
+
+-->
+                  
+          <!--    <button type="button" class="btn add-to-cart-btn" data-variants_id="">{{ 'products.product.add_to_cart' | t }}</button>
+           -->    
+                </div>
+              </div>
+            </form> 
+            
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<script type="text/javascript">  
+  Shopify.doNotTriggerClickOnThumb = false; 
+
+  var selectCallbackQuickview = function(variant, selector) {
+    var productItem = jQuery('.quick-view .product-item');
+    addToCart = productItem.find('.add-to-cart-btn'),
+      productPrice = productItem.find('.price'),
+      comparePrice = productItem.find('.compare-price'),
+      totalPrice = productItem.find('.total-price span');           
+
+    if (variant) {
+      if (variant.available) {
+        // We have a valid product variant, so enable the submit button
+        addToCart.removeClass('disabled').removeAttr('disabled').text('{{ 'products.product.add_to_cart' | t }}');
+
+      } else {
+        // Variant is sold out, disable the submit button
+        addToCart.val(window.inventory_text.sold_out).addClass('disabled').attr('disabled', 'disabled');
+      }
+
+
+      productPrice.html(Shopify.formatMoney(variant.price, window.money_format));
+      
+      {% if settings.use_color_swatch %}
+      var form = jQuery('#' + selector.domIdPrefix).closest('form');
+      for (var i=0,length=variant.options.length; i<length; i++) {
+        var radioButton = form.find('.swatch[data-option-index="' + i + '"] :radio[value="' + variant.options[i] +'"]');
+        if (radioButton.size()) {
+          radioButton.get(0).checked = true;
+        }
+      }
+      {% endif %}
+
+      /*recaculate total price*/
+      //try pattern one before pattern 2
+      var regex = /([0-9]+[.|,][0-9]+[.|,][0-9]+)/g;
+      var unitPriceTextMatch = jQuery('.quick-view .price').text().match(regex);
+
+      if (!unitPriceTextMatch) {
+        regex = /([0-9]+[.|,][0-9]+)/g;
+        unitPriceTextMatch = jQuery('.quick-view .price').text().match(regex);     
+      }
+	
+      if (unitPriceTextMatch) {
+        var unitPriceText = unitPriceTextMatch[0];     
+        var unitPrice = unitPriceText.replace(/[.|,]/g,'');
+        var quantity = parseInt(jQuery('.quick-view input[name=quantity]').val());
+        var totalPrice = unitPrice * quantity;
+
+        var totalPriceText = Shopify.formatMoney(totalPrice, window.money_format);
+        regex = /([0-9]+[.|,][0-9]+[.|,][0-9]+)/g;     
+        if (!totalPriceText.match(regex)) {
+          regex = /([0-9]+[.|,][0-9]+)/g;
+        } 
+        totalPriceText = totalPriceText.match(regex)[0];
+
+        var regInput = new RegExp(unitPriceText, "g"); 
+        var totalPriceHtml = jQuery('.quick-view .price').html().replace(regInput ,totalPriceText);
+        jQuery('.quick-view .total-price span.money').html(totalPriceHtml);     
+      }
+      /*end of price calculation*/
+
+
+      {% if settings.show_multiple_currencies %}
+      	Currency.convertAll(window.shop_currency, jQuery('select[name=currencies] option:selected').val(), 'span.money', 'money_format');
+      {% endif %}
+
+      /*begin variant image*/
+      if (variant && variant.featured_image) {
+        var originalImage = jQuery(".quick-view .quickview-image img");
+        var newImage = variant.featured_image;
+        var element = originalImage[0];
+        Shopify.Image.switchImage(newImage, element, function (newImageSizedSrc, newImage, element) {
+          newImageSizedSrc = newImageSizedSrc.replace(/\?(.*)/,"");
+          jQuery('.quick-view .more-view-wrapper img').each(function() {
+            var grandSize = jQuery(this).attr('src');
+            grandSize = grandSize.replace('compact','grande');
+
+            if (grandSize == newImageSizedSrc) {
+              jQuery(this).parent().trigger('click');              
+              return false;
+            }
+          });
+        });        
+      }
+      /*end of variant image*/   
+
+    } else {
+      // The variant doesn't exist. Just a safegaurd for errors, but disable the submit button anyway
+      addToCart.text(window.inventory_text.unavailable).addClass('disabled').attr('disabled', 'disabled');
+    }
+  };
+</script>

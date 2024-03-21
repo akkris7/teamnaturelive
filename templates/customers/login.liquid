@@ -1,0 +1,105 @@
+{% include 'breadcrumb' %}
+<div class="container">
+  <div class="wraper-inner sn">
+    <div class="row">
+
+      <div class="col-12 col-sm-6">
+
+        <div class="formaccount formlogin">
+          <div id="login">
+            <h1 class="page-title">{{ 'customer.login.title' | t }}</h1>
+            {% form 'customer_login' %}
+            {{ form.errors | default_errors }}
+
+            <div class="form-group">
+              <label for="email">{{ 'customer.login.email' | t }} {% if required != "" %}<sup>*</sup>{% endif %}</label>
+              <input type="email" name="customer[email]" class="form-control" id="email">
+            </div>
+
+            {% if form.password_needed %}
+            <div class="form-group">
+              <label for="password">{{ 'customer.login.password' | t }} {% if required != "" %}<sup>*</sup>{% endif %}</label>
+              <input type="password" name="customer[password]" class="form-control" id="password">
+            </div>
+            {% endif %}
+            <div class="row">
+              <div class="col-12">
+                <button type="submit" class="btn btn-default"><i class="fa fa-sign-in" aria-hidden="true"></i>{{ 'customer.login.sign_in' | t }}</button>
+              </div>
+            </div>  
+            <br>
+            {% if form.password_needed %}
+            <p class="btn-top"><a href="#" onclick="showRecoverPasswordForm();return false;" class="link-color">{{ 'customer.login.forgot_password' | t }}</a></p>
+            {% endif %}
+            {% endform %}
+
+          </div>
+
+          <div id="recover-password" style="display:none;" class="wrap">
+
+            <div class="block">
+              <h1 class="page-title">{{ 'customer.recover_password.title' | t }}</h3>
+              <p>{{ 'customer.recover_password.subtext' | t }}</p>
+            </div>
+
+            <div class="form-vertical">
+              {% form 'recover_customer_password' %}
+
+              {{ form.errors | default_errors }}
+
+              {% comment %}
+              Add a hidden span to indicate the form was submitted succesfully.
+              {% endcomment %}
+              {% if form.posted_successfully? %}
+              <span class="hide reset-password-success"></span>
+              {% endif %}
+
+              
+              <div class="form-group">
+                <label for="RecoverEmail">{{ 'customer.recover_password.email' | t }}</label>
+              <input type="email" value="" name="email" id="RecoverEmail" class="form-control" autocorrect="off" autocapitalize="off">
+              </div>
+              <div class="submit">
+                <p>
+                  <input type="submit" class="btn btn-default" value="{{ 'customer.recover_password.submit' | t }}">
+                </p>
+              </div>
+              {{ 'customer.recover_password.or' | t }}
+              <a class="" href="#" onclick="hideRecoverPasswordForm();return false;">{{ 'customer.recover_password.cancel' | t }}</a>
+              {% endform %}
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-6">
+        <div class="formaccount formlogin block">
+          <h1 class="page-title">{{ 'customer.register.title' | t }}</h1>
+          <div class="formcontent">
+            <div class="registerdescription">
+              <p>{{ 'customer.register.subtext' | t }}</p>
+            </div>
+            <div class="submit">
+              <a class="btn btn-default" href="/account/register">
+                <i class="fa fa-user-plus" aria-hidden="true"></i><span>{{ 'customer.register.submit' | t }}</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  function showRecoverPasswordForm() {
+    document.getElementById('recover-password').style.display = 'block';
+    document.getElementById('login').style.display='none';
+  }
+
+  function hideRecoverPasswordForm() {
+    document.getElementById('recover-password').style.display = 'none';
+    document.getElementById('login').style.display = 'block';
+  }
+
+  if (window.location.hash == '#recover') { showRecoverPasswordForm() }
+</script>

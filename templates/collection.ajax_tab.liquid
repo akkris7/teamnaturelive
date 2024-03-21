@@ -1,0 +1,54 @@
+
+{%- layout none -%}
+
+{%- if canonical_url contains 'q=' -%}
+  {%- assign paginate = canonical_url | split: 'q=' -%}
+  {%- assign last = paginate | last -%}
+  {%- assign last = last | split: '+' -%}
+  {%- assign column1 = last[0] | remove: "column1_" -%}
+  {%- assign column2 = last[1] | remove: "column2_" -%}
+  {%- assign column3 = last[2] | remove: "column3_" -%}
+  {%- assign column4 = last[3] | remove: "column4_" -%}
+  {%- assign column5 = last[4] | remove: "column5_" -%}
+  {%- assign nav = last[5] | remove: "nav_" -%}
+  {%- assign autoplay = last[6] | remove: "autoplay_" -%}
+  {%- assign autospeed = last[7] | remove: "autospeed_" -%}
+  {%- assign speed = last[8] | remove: "speed_" -%}
+  {%- assign margin = last[9] | remove: "margin_" -%}
+  {%- assign image_size = last[10] | remove: "image_size_" -%}
+  {%- assign rtl = last[11] | remove: "rtl_" -%}
+  {%- assign row 			= last[12] | remove: "row_"  -%}
+  {%- assign limit 			= last[13] | remove: "limit_"     -%}
+{%- endif -%}
+
+{%- capture min_html -%}
+
+  <div class="ss-carousel ss-owl">
+    <div class="owl-carousel owl-loaded owl-drag" data-nav="{{nav}}" data-rtl="{{rtl}}" data-margin="{{margin}}" data-autoplay="{{autoplay}}" data-autospeed="{{autospeed}}" data-speed="{{speed}}" data-column1="{{column1}}" data-column2="{{column2}}" data-column3="{{column3}}" data-column4="{{column4}}" data-column5="{{column5}}">
+
+      {% paginate collection.products %}
+      		{% for product in collection.products limit: limit %}
+     			
+      			  {% assign col = forloop.index |modulo: row  %}
+                  {% assign col3 = forloop.index0 |modulo: row   %}
+                  {% assign col2 = forloop.index %} 
+				  
+      			  {% if col3 == 0 or col2 == 1  %}
+                   		<div class="item {% if forloop.first == true %}item-first{% endif%}">
+                   {% endif %}
+                          
+      					{% include 'product-card-grid' %}
+                          
+                  {% if col == 0 or forloop.last  %}
+                 	 </div>
+                  {% endif %}     
+                          
+      		{% endfor %}
+      {% endpaginate %}
+    </div>    
+  </div>
+
+
+{%- endcapture -%}
+
+{{min_html | strip_newlines | remove: "  "}} 

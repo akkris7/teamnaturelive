@@ -1,0 +1,113 @@
+<div class="article-img">
+  <img src="{{ article.image.src | img_url: 'master' }}">
+  <div class="media__info">
+    {% if section.settings.blog_show_author %}
+<!--     <span class="article-author"><span>{{ 'blogs.article.by' | t: author: article.author }}</span> {{ 'blogs.article.by_author' | t: author: article.author }}</span> -->
+    {% endif %}
+
+    {% if article.tags.size > 0 %}
+    <span class="article__tags rte hidden">
+      in
+      {% for tag in article.tags %}
+      <a href="{{ blog.url }}/tagged/{{ tag | handle }}" class="article__grid-tag">{{ tag }}</a>, 
+      {% endfor %}
+    </span>
+    {% endif %}
+     {% if section.settings.blog_show_date %}
+    <span class="article-date">
+      {{ article.published_at | time_tag: format: 'month_day_year' }}
+    </span>
+    {% endif %}
+    <div class="article-title">
+      <h1 class="article__title font-ct">{{ article.title }}</h1>
+    </div>
+   
+  </div>
+</div>
+
+<div class="rte" itemprop="articleBody">
+  {{ article.content }}
+</div>
+<div class="d-flex two__float tag-comment mt_30">
+  <div class="post-tags">
+    {% for tag in article.tags %}
+    <a href="{{ blog.url }}/tagged/{{ tag | handle }}" class="article__grid-tag">{{ tag }}</a>, 
+    {% endfor %}
+  </div>
+  {% if blog.comments_enabled? and article.comments_count > 0 %}
+  <div class="post-comment">
+    <i class="fa fa-comments" aria-hidden="true"></i> 
+    <a href="{{ article.url }}#comments" class="btn-blog">
+      {{ 'blogs.comments.comments_with_count' | t: count: article.comments_count }}
+    </a>
+  </div>
+  {% endif %}
+</div>
+{% if section.settings.show_share_buttons %}
+{% include 'social-sharing', share_title: article.title, share_permalink: article.url, share_image: article.image %}
+{% endif %}
+
+{% schema %}
+{
+  "name": "Posts",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "blog_show_author",
+      "label": "Show author",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "blog_show_date",
+      "label": "Show date",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_share_buttons",
+      "label": "Show social sharing buttons",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Blogs Text"
+    },
+    {
+      "type":      "range",
+      "id":        "font_size_title",
+      "min":       12,
+      "max":        18,
+      "step":       1,
+      "unit":       "px",
+      "label":     "Font size Title Blogs",
+      "default":   18
+    },
+    {
+      "type": "color",
+      "id": "text_blog",
+      "label": "Title Blogs Color",
+      "default": "#444"
+    },
+    {
+      "type": "color",
+      "id": "text_des_blog",
+      "label": "Des Text Color",
+      "default": "#666"
+    }
+  ]
+}
+{% endschema %}
+
+
+<style> 
+  h1.article__title{
+    font-size: {{ section.settings.font_size_title }}px;
+    color: {{ section.settings.text_blog }};
+    margin: 0 0 10px;
+  }
+  .rte span{
+    color: {{ section.settings.text_des_blog }};
+  }
+
+</style> 
